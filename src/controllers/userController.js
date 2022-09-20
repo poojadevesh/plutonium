@@ -2,8 +2,8 @@ import user from  '../models/userModel.js'
 import validEmail from 'email-validator'
 
 
-import {isValidBody,isValidEnum,isValidNumber,isValidPwd, isValidStr} from '../util/validator.js'
-
+import {isValidBody,isValidEnum,isValidNumber,isValidPwd, isValidStr} from '../util/userValidate.js'
+//By -Richard
 const createUser = async (req,res)=>{
 
     try{
@@ -59,7 +59,7 @@ const createUser = async (req,res)=>{
        
      let result = await user.create(body)
 
-     return res.status(201).send({status:true,data:result})
+     return res.status(201).send({status:true,message: "Registration done Successfully",data:result})
 
 }
     catch(err){

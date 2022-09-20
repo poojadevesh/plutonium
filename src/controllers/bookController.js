@@ -1,6 +1,7 @@
 import bookModel from '../models/bookModel.js'
 import userModel from '../models/userModel.js'
-import { dataValidation, isValidObjectId, isValidPhone, isValidEmail, isValidPwd, isValidTitleEnum, isValidText, isValidName, isValidReviews, isValidIsbn } from '../util/bookValidate.js'
+import { isValidObjectId } from '../util/userValidate.js'
+//import { dataValidation, isValidObjectId, isValidPhone, isValidEmail, isValidPwd, isValidTitleEnum, isValidText, isValidName, isValidReviews, isValidIsbn } from '../util/bookValidate.js'
 
 // -----------------data present or not or extra in the body-------------------
 const createBook = async (req, res) => {
@@ -39,13 +40,13 @@ const createBook = async (req, res) => {
         if (!existUser)
             return res.status(400).send({ status: false, message: 'user doesn\'t exits' })
 
-        //---------------------------------ISBN validation------------------------------
+         //---------------------------------ISBN validation------------------------------
         if (!ISBN)
             return res.status(400).send({ status: false, message: 'ISBN isn\'t present' })
         if (!isValidIsbn(ISBN))
             return res.status(400).send({ status: false, message: 'ISBN isn\'t valid' })
 
-        //---------------------------------category validation------------------------------
+         //---------------------------------category validation------------------------------
         if (!category)
             return res.status(400).send({ status: false, message: 'category isn\'t present' })
 
@@ -69,7 +70,46 @@ const createBook = async (req, res) => {
 }
 
 
-//<========================================= book/put ==================================>
+
+
+
+
+
+
+//GET /books/:bookId 
+//BY Richard
+
+const getBook = async(req,res)=>{
+
+    try{
+
+        let bookID = req.params.bookId
+ 
+    if (!isValidObjectId(bookID)) return res.status(400).send({ status: false, message: "Enter a valid book id" });
+
+    let bookId = await bookModel.findById(bookID)
+
+
+    if(!bookId)return res.status(404).send({status: false, message: 'Book Not Found'})
+
+    if(bookId.isDeleted == true)
+     return res.status(404).send({status:false,message:`${bookId.title} Book is deleted`})
+
+      let findBook = await bookModel.findById(bookID).select({__v:0})
+      let review = 'goood'
+      console.log(findBook);
+      findBook._doc.review = review
+
+      res.status(200).send({ status: true, message: 'This Book is Available', data: findBook})
+
+    }
+    catch (err) {
+        res.status(500).send({ status: false, error: err.message })
+    }}
+
+
+
+//========================================= book/put ==================================>
 
 const updateBook = async (req, res) => {
     try {
@@ -186,4 +226,4 @@ const updateBook = async (req, res) => {
 
 
 
-export { createBook ,updateBook}
+export { createBook,getBook,updateBook}

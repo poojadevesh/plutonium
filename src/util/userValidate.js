@@ -1,5 +1,4 @@
-import mongoose from 'mongoose'
-
+import mongoose from "mongoose";
 
 //isValidBody
 const  isValidBody = (object) =>{
@@ -13,7 +12,6 @@ const isValidStr= (String) => {
     if (/\d/.test(String)) 
       return true
       return false;
-   
   };
 
 //isValidEnum
@@ -38,5 +36,12 @@ const isValidPwd = (password) => {
     return regx
 };
 
-export {isValidBody,isValidStr,isValidEnum,isValidNumber, isValidPwd}
+//isValidObjId
+const isValidObjectId = (ObjectId)=>{
+   return mongoose.Types.ObjectId.isValid(ObjectId)
+}
+
+
+
+export {isValidBody,isValidStr,isValidEnum,isValidNumber, isValidPwd,isValidObjectId}
 
