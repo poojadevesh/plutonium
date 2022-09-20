@@ -146,7 +146,7 @@ let token = jwt.sign(
         iat: Math.floor(Date.now() / 1000),
         exp: Math.floor((Date.now() / 1000) + 180 * 60),
     },
-    "Room 36"
+    "Room 56"
 )
 return res
     .status(200)
