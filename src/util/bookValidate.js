@@ -1,10 +1,8 @@
-import mongoose from 'mongoose'
-
 // ------------dataValidation-----------
 const dataValidation = (data) => {
     if (Object.keys(data).length != 0 )
         return true
-    return false
+       return false
 }
 
 //--------------------mongoDbId------------------------
@@ -27,8 +25,8 @@ const isValidEmail = (email) => {
 }
 
 //--------------------------------------password----------------------------------------
-const isValidPass = (password) => {
-    const regx = /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,99}$/.test(password)
+const isValidPassword = (password) => {
+    const regx = /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,15}$/.test(password)
     return regx
 };
 
@@ -46,7 +44,7 @@ const isValidText = (text) => {
 
 //----------------------------------------name--------------------------------------------
 const isValidName = (name) => {
-    if ((typeof name == "String" && name.trim().length != 0 || name.match(/^[A-Za-z]{2,}$/)))
+    if ((name.trim().length != 0 || name.match(/^[A-Za-z]{2,}$/)))
         return true
     return false
 };
@@ -64,5 +62,3 @@ const isValidIsbn = (value) => {
         return true
     return false
 }
-export { dataValidation, isValidObjectId, isValidPhone, isValidEmail, isValidPass, isValidTitleEnum, isValidText, isValidName, isValidReviews, isValidIsbn  }
-

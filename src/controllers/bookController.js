@@ -1,6 +1,6 @@
 import bookModel from '../models/bookModel.js'
 import userModel from '../models/userModel.js'
-import { dataValidation, isValidObjectId, isValidPhone, isValidEmail, isValidPass, isValidTitleEnum, isValidText, isValidName, isValidReviews, isValidIsbn } from '../util/validator.js'
+import { dataValidation, isValidObjectId, isValidPhone, isValidEmail, isValidPwd, isValidTitleEnum, isValidText, isValidName, isValidReviews, isValidIsbn } from '../util/userValidate.js'
 
 // -----------------data present or not or extra in the body-------------------
 const createBook = async (req, res) => {
