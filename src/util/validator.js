@@ -1,8 +1,8 @@
-import express from 'express'
+import mongoose from 'mngoose'
 
 // ------------dataValidation-----------
 const dataValidation = (data) => {
-    if (Object.keys(data).length != 0 || Object.keys(data).length > 7)
+    if (Object.keys(data).length != 0 )
         return true
     return false
 }
