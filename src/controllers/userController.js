@@ -1,7 +1,8 @@
 import user from  '../models/userModel.js'
 import validEmail from 'email-validator'
 
-import { } from '../util/validator.js'
+
+import {dataValidation,isValidTitleEnum,isValidPass } from '../util/validator.js'
 
 const createUser = async (req,res)=>{
 
@@ -23,6 +24,10 @@ const createUser = async (req,res)=>{
         if(!phone)
         return res.status(400).send({status:true,message:"phone is  mandatory"})
 
+        if(!isValidPass(password))
+        return res.status(400).send({status:true,message:"Invalid PhoneNo"})
+
+
         let uniquePhoneNo = await user.findOne({phone:phone})
         if(uniquePhoneNo)
         return res.status(400).send({status:true,message:"phoneNo should be  unique"})
@@ -30,7 +35,7 @@ const createUser = async (req,res)=>{
         if(!email)
         return res.status(400).send({status:true,message:"email is  mandatory"})
 
-        if(!validEmail.validate(email)) return res.status(400).send({ status: false, msg: "Enter a valid Email-Id" })
+        if(!validEmail.validate(email)) return res.status(400).send({ status: false, msg: `your Email-Id ${email}is invalid` })
 
         let uniqueEmail = await user.findOne({email:email})
         if(uniqueEmail)
@@ -44,10 +49,10 @@ const createUser = async (req,res)=>{
 
    let result = await user.create(data)
 
-    return res.status(201).json({status:true,data:result})
+    return res.status(201).send({status:true,data:result})
 
     }catch(err){
-        return res.status(500).json({status:false,message:err.message})
+        return res.status(500).send({status:false,message:err.message})
     }
 
 

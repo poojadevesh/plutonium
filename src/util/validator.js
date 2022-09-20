@@ -1,4 +1,4 @@
-const mongoose = require('mongoose')
+import mongoose from "mongoose";
 // ----------------dataValidation----------------
 const dataValidation = (data) => {
     if (Object.keys(data).length != 0)
