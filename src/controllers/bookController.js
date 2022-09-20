@@ -73,7 +73,7 @@ const createBook = async (req, res) => {
     //--------------------------------finding book-----------------------------------
     const existBook = await bookModel.find()
 
-    //------------------------------finding duplicate title------------------------------
+    //---------------------------finding duplicate title---------------------------
     for (let i = 0; i < existBook.length; i++) {
       if (existBook[i].title === title)
         return res.status(400).send({ status: false, msg: 'title is Duplicate' })
