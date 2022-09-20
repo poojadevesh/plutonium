@@ -8,11 +8,14 @@ const createBook = async (req, res) => {
         const reqBody = req.body
         const { title, excerpt, userId, ISBN, category, subcategory, reviews } = reqBody
 
+        //------------------------------body validation-----------------------------------
         if (!dataValidation(reqBody))
             return res.status(400).send({ status: false, message: 'Please fill the data in the correct way' })
         
+        //------------------------------title validation-----------------------------------
         if (!title)
             return res.status(400).send({ status: false, message: 'title isn\'t present' })
+        //------------------------------title validation-----------------------------------
         if (!excerpt)
             return res.status(400).send({ status: false, message: 'excerpt isn\'t present' })
         
