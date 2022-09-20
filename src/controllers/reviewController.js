@@ -10,13 +10,13 @@ import { } from '../util/validator.js'
 
 //----------------------------------------updateReview----------------------------------------------
 // SHAYAN BISWAS
-const updateReview = async (req, res) => {
-    try { }
-    catch (err) {
-        res.status(500).send({ status: false, error: err.message })
-    }
-}
+// const updateReview = async (req, res) => {
+//     try { }
+//     catch (err) {
+//         res.status(500).send({ status: false, error: err.message })
+//     }
+// }
 
 
 
-export { updateReview }
+// export { updateReview }
