@@ -1,4 +1,4 @@
-const mongoose = require('mongoose')
+import express from 'express'
 
 // ------------dataValidation-----------
 const dataValidation = (data) => {
