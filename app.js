@@ -1,6 +1,6 @@
 import express from 'express'
 import mongoose from 'mongoose'
-import route from './routes/route.js'
+import route from './src/routes/route.js'
 
 const app = express()
 const PORT = 3000
