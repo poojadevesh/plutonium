@@ -230,15 +230,13 @@ const updateBook = async (req, res) => {
 const deleteBook = async (req, res) => {
   try {
     const bookId = req.params.bookId;
-    console.log(bookId);
-
     if (!bookId)
       return res.status(400).send({ status: false, message: 'Please enter bookId' })
 
     //-------------------finding Book by id through params-------------------
     const book = await bookModel.findById(bookId)
-    console.log(book);
-    if (!book || book.isDeleted == true)
+
+    if (!book || book.isDeleted === true)
       return res.status(400).send({ status: false, message: 'No book exits' })
 
     //--------------------------------deleting Book by id-------------------------------------
