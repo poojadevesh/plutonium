@@ -1,4 +1,4 @@
-import mongoose from 'mngoose'
+import mongoose from 'mongoose'
 
 // ------------dataValidation-----------
 const dataValidation = (data) => {
