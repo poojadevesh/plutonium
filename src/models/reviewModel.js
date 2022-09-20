@@ -1,4 +1,4 @@
-const mongoose = require('mongoose')
+import mongoose from 'mongoose'
 const ObjectId = mongoose.Schema.Types.ObjectId
 
 const reviewSchema = new mongoose.Schema(
@@ -13,5 +13,5 @@ const reviewSchema = new mongoose.Schema(
     { timestamps: true }
 )
 
-module.exports = mongoose.model('Review', reviewSchema)
+export default mongoose.model('Review', reviewSchema)
 

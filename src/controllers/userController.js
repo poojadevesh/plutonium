@@ -1,6 +1,8 @@
-const userModel = require('../models/userModel')
-const { } = require('../util/validator')
+import bookModel from  '../models/bookModel.js'
+
+import { } from '../util/validator.js'
+
+const createUser = async (req,res)=>{}
 
 
-
-module.exports = {  }
+export {  }
