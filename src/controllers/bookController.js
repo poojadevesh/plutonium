@@ -225,7 +225,7 @@ const updateBook = async (req, res) => {
 
 
 
-//---------------------------------------------deleteBlog-----------------------------------------------
+//---------------------------------------------Book-----------------------------------------------
 //SHAYAN BISWAS
 const deleteBook = async (req, res) => {
   try {
@@ -235,13 +235,13 @@ const deleteBook = async (req, res) => {
     if (!bookId)
       return res.status(400).send({ status: false, message: 'Please enter blogId' })
 
-    //-------------------finding blog by id through params-------------------
+    //-------------------finding Book by id through params-------------------
     const book = await bookModel.findById(bookId)
     console.log(book);
     if (!book || book.isDeleted == true)
       return res.status(400).send({ status: false, message: 'No book exits' })
 
-    //--------------------------------deleting blog by id-------------------------------------
+    //--------------------------------deleting Book by id-------------------------------------
     const deletedBook = await bookModel.findByIdAndUpdate({ _id: bookId }, { $set: { isDeleted: true, deletedAt: Date.now() } }, { new: true })
     res.status(200).send({ status: true, message: 'Blog has been deleted', data: deletedBook })
   }
