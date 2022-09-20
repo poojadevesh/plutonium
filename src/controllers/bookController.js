@@ -1,9 +1,11 @@
 import bookModel from '../models/bookModel.js'
 import userModel from '../models/userModel.js'
-import { isValidObjectId } from '../util/userValidate.js'
-import { dataValidation, isValidObjectId, isValidPhone, isValidEmail, isValidPwd, isValidTitleEnum, isValidText, isValidName, isValidReviews, isValidIsbn } from '../util/bookValidate.js'
+// import { isValidObjectId } from '../util/userValidate.js'
+import { dataValidation, isValidObjectId, isValidPhone, isValidEmail, isValidPass, isValidTitleEnum, isValidText, isValidName, isValidReviews, isValidIsbn } from '../util/bookValidate.js'
+
 
 // -----------------data present or not or extra in the body-------------------
+//SHAYAN BISWAS
 const createBook = async (req, res) => {
     try {
         const reqBody = req.body
@@ -97,7 +99,7 @@ const getBook = async(req,res)=>{
 
       let findBook = await bookModel.findById(bookID).select({__v:0})
       let review = 'goood'
-      console.log(findBook);
+      // console.log(findBook);
       findBook._doc.review = review
 
       res.status(200).send({ status: true, message: 'This Book is Available', data: findBook})
@@ -223,7 +225,32 @@ const updateBook = async (req, res) => {
 
 
 
+//---------------------------------------------deleteBlog-----------------------------------------------
+//SHAYAN BISWAS
+const deleteBook = async (req, res) => {
+  try {
+    const bookId = req.params.bookId;
+    console.log(bookId);
+
+    if (!bookId)
+      return res.status(400).send({ status: false, message: 'Please enter blogId' })
+
+    //-------------------finding blog by id through params-------------------
+    const book = await bookModel.findById(bookId)
+    console.log(book);
+    if (!book || book.isDeleted == true)
+      return res.status(400).send({ status: false, message: 'No book exits' })
+
+    //--------------------------------deleting blog by id-------------------------------------
+    const deletedBook = await bookModel.findByIdAndUpdate({ _id: bookId }, { $set: { isDeleted: true, deletedAt: Date.now() } }, { new: true })
+    res.status(200).send({ status: true, message: 'Blog has been deleted', data: deletedBook })
+  }
+  catch (err) {
+    res.status(500).send({ status: false, error: err.message })
+  }
+
+}
 
 
 
-export { createBook,getBook,updateBook}
+export { createBook, getBook, deleteBook }
