@@ -1,8 +1,8 @@
-
 import express from 'express'
-import { createUser } from '../controllers/userController.js'
-
 const router = express.Router()
+import { createBook } from '../controllers/bookController.js'
+
+router.post('/books', createBook)
 
 
 router.post('/createUser',createUser)
