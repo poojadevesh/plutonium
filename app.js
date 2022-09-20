@@ -1,14 +1,13 @@
-
 import express from 'express'
 import mongoose from 'mongoose'
-import route from './routes/route.js'
+import route from './src/routes/route.js'
 
 const app = express()
 const PORT = 3000
 
 app.use(express.json())
 
-mongoose.connect('mongodb+srv://riju:riju@cluster0.s4hmv.mongodb.net/groupXDatabase', {
+mongoose.connect('mongodb+srv://riju:riju@cluster0.s4hmv.mongodb.net/group56Database', {
     useNewUrlParser: true
 })
     .then(() => console.log('MongoDB is connected'))
