@@ -71,14 +71,6 @@ const isValid = function (value) {
     return true;
 }
 
-
-// const isValidIsbn = function (value) {
-//     if (!(/^(?:ISBN(?:-1[03])?:? )?(?=[-0-9 ]{17}$|[-0-9X ]{13}$|[0-9X]{10}$)(?:97[89][- ]?)?[0-9]{1,5}[- ]?(?:[0-9]+[- ]?){2}[0-9X]$/.test(value.trim()))) {
-//         return false
-//     }
-//     return true
-// };
-
 const isValidDate = (date)=>{
     const regx = /^\d{4}\-(0[1-9]|1[012])\-(0[1-9]|[12][0-9]|3[01])$/
     return regx.test(date)

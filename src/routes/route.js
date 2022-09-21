@@ -1,8 +1,10 @@
 import express from 'express'
-import { createUser,userLogin } from '../controllers/userController.js'
-import { createBook,getBooksByQuery, getBook,deleteBook } from '../controllers/bookController.js'
-import {addReview} from '../controllers/reviewController.js'
 const router = express.Router()
+
+import { createUser,userLogin } from '../controllers/userController.js'
+import { createBook,getBooksByQuery,getBook,updateBook,deleteBook } from '../controllers/bookController.js'
+import {addReview} from '../controllers/reviewController.js'
+
 
 
 
@@ -12,10 +14,11 @@ router.post('/login',userLogin)
 
 router.post('/createUser',createUser)
 router.post("/login",userLogin)
+
 //Book API
 router.post('/books', createBook)
 router.get('/books', getBooksByQuery)
-router.get('/books/:bookId', getBook)
+router.get('/books/:bookId',getBook)
 router.put("/books/:bookId",updateBook)
 router.delete('/books/:bookId', deleteBook)
 // router.delete('/books/:bookId/review:reviewId', updateReview)
