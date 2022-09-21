@@ -78,7 +78,7 @@ const isValid = function (value) {
 //     }
 //     return true
 // };
-export { dataValidation, isValidObjectId, isValidPhone, isValidEmail, isValidPass, isValidTitleEnum, isValidText, isValidName, isValidReviews, isValidIsbn,isValid  }
+
 const isValidDate = (date)=>{
     const regx = /^\d{4}\-(0[1-9]|1[012])\-(0[1-9]|[12][0-9]|3[01])$/
     return regx.test(date)
@@ -90,4 +90,4 @@ const isValidRating= (rating)=>{
     return false
     return true
 }
-export {isValidRating, dataValidation, isValidObjectId, isValidPhone, isValidEmail, isValidPass, isValidTitleEnum, isValidText, isValidName, isValidReviews, isValidIsbn, isValidDate  }
+export { dataValidation, isValidObjectId, isValidPhone, isValidEmail, isValidPass, isValidTitleEnum, isValidText, isValidName, isValidReviews, isValidIsbn,isValid , }

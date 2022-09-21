@@ -3,8 +3,8 @@ import { createUser,userLogin } from '../controllers/userController.js'
 import { createBook,getBooksByQuery, getBook,deleteBook } from '../controllers/bookController.js'
 import {addReview} from '../controllers/reviewController.js'
 const router = express.Router()
-import { createUser,userLogin } from '../controllers/userController.js'
-import { createBook, getBook,updateBook } from '../controllers/bookController.js'
+
+
 
 // User API
 router.post('/register',createUser)

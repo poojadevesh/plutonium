@@ -1,7 +1,7 @@
 import bookModel from '../models/bookModel.js'
 import userModel from '../models/userModel.js'
 
-import { dataValidation, isValidObjectId, isValidPhone, isValidEmail, isValidPass, isValidTitleEnum, isValidText, isValidName, isValidReviews, isValidIsbn, isValidDate, } from '../util/bookValidate.js'
+//import { dataValidation, isValidObjectId, isValidPhone, isValidEmail, isValidPass, isValidTitleEnum, isValidText, isValidName, isValidReviews, isValidIsbn, isValidDate, } from '../util/bookValidate.js'
 
 // -------------------------------------------createBook---------------------------------------------
 //SHAYAN BISWAS
@@ -41,8 +41,8 @@ const createBook = async (req, res) => {
     if (!ISBN)
       return res.status(400).send({ status: false, message: 'ISBN isn\'t present' })
 
-    if (!isValidIsbn(ISBN))
-      return res.status(400).send({ status: false, message: 'ISBN isn\'t valid' })
+    // if (!isValidIsbn(ISBN))
+    //   return res.status(400).send({ status: false, message: 'ISBN isn\'t valid' })
 
     //---------------------------------category validation------------------------------
     if (!category)
