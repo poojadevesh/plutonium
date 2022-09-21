@@ -68,28 +68,6 @@ const createUser = async (req,res)=>{
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 //========================POST /login===============================
 
 const userLogin=async (req,res)=>{
