@@ -1,4 +1,12 @@
 import mongoose  from "mongoose"
+import moment from "moment"
+
+const isValidDate = (reviewedAt)=>{
+    let value = reviewedAt;
+let check = moment(value,'YYYY-MM-DD', true).isValid();
+        return check
+}
+
 
 //isValidObjId
 const isValidObjectId = (ObjectId)=>{
@@ -13,4 +21,4 @@ const isValidRating= (rating)=>{
     return true
 }
 
- export{isValidObjectId,isValidRating}
+ export{isValidObjectId,isValidRating,isValidDate}

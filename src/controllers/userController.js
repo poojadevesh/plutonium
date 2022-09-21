@@ -4,6 +4,8 @@ import jwt from "jsonwebtoken"
 
 import {isValidBody,isValidEnum,isValidNumber,isValidPwd, isValidStr} from '../util/userValidate.js'
 
+//POST /register
+//By Richard
 const createUser = async (req,res)=>{
 
     try{
@@ -28,21 +30,21 @@ const createUser = async (req,res)=>{
          return res.status(400).send({ status: false, msg: "name should be only string " });
 
         if(!phone)
-        return res.status(400).send({status:false,message:"phone is  mandatory"})
+        return res.status(400).send({status:false,message:"Phone is  mandatory"})
 
 
         if(isValidNumber(phone))
-        return res.status(400).send({status:false,message:" please enter 10 digit IND mobile number"})
+        return res.status(400).send({status:false,message:" Please enter 10 digit IND mobile number"})
 
 
         let uniquePhoneNo = await userModel.findOne({phone:phone})
         if(uniquePhoneNo)
-        return res.status(400).send({status:false,message:"phoneNo should be  unique"})
+        return res.status(400).send({status:false,message:"PhoneNo should be  unique"})
 
         if(!email)
-        return res.status(400).send({status:false,message:"email is  mandatory"})
+        return res.status(400).send({status:false,message:"Email is  mandatory"})
 
-        if(!validEmail.validate(email)) return res.status(400).send({ status: false, msg: `your Email-Id ${email}is invalid` })
+        if(!validEmail.validate(email)) return res.status(400).send({ status: false, msg: `Your Email-Id ${email}is invalid` })
         
 
         let uniqueEmail = await userModel.findOne({email:email})

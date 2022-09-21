@@ -1,5 +1,6 @@
 import bookModel from '../models/bookModel.js'
 import userModel from '../models/userModel.js'
+import reviewModel  from '../models/reviewModel.js'
 
 import { dataValidation, isValidObjectId, isValidPhone, isValidEmail, isValidPass, isValidTitleEnum, isValidText, isValidName, isValidReviews, isValidIsbn, isValidDate, } from '../util/bookValidate.js'
 
@@ -97,7 +98,7 @@ const createBook = async (req, res) => {
 
 //=====================================================================================================
 //GET /books BY-QUERY
-//by richard
+//by Richard
 
 let getBooksByQuery = async (req,res)=>{
 
@@ -131,22 +132,23 @@ const getBook = async (req, res) => {
 
     let bookID = req.params.bookId
 
-    if (!isValidObjectId(bookID)) return res.status(400).send({ status: false, message: "Enter a valid book id" });
+    if (!isValidObjectId(bookID)) return res.status(400).send({ status: false, message: `This bookId ${bookID} is Invalid` });
 
     let bookId = await bookModel.findById(bookID)
 
-
-    if (!bookId) return res.status(404).send({ status: false, message: 'Book Not Found' })
+    if (!bookId) return res.status(404).send({ status: false, message: `No Book Found By This BookId ${bookID}` })
 
     if (bookId.isDeleted == true)
-      return res.status(404).send({ status: false, message: `${bookId.title} Book is deleted` })
+      return res.status(404).send({ status: false, message: `The Book Title '${bookId.title}' has been Deleted` })
 
-    let findBook = await bookModel.findById(bookID).select({ __v: 0 })
-    let review = 
+    let findBook = await bookModel.findById(bookID).select({ __v: 0 ,ISBN:0})
+    let review = await reviewModel.find({bookId:bookID}).select({isDelete:0,createdAt:0,updatedAt:0,isDeleted:0,__v:0})
    
-    findBook._doc.review = review
+    findBook._doc.reviewsData = review
+    
+    let value = `This book got ${findBook.reviews}👁‍🗨 reviews`
 
-    res.status(200).send({ status: true, message: 'This Book is Available', data: findBook })
+    res.status(200).send({ status: true, message: 'Books List', reviews:value, data: findBook })
 
   }
   catch (err) {
