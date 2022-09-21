@@ -1,6 +1,6 @@
 import bookModel from '../models/bookModel.js'
 import userModel from '../models/userModel.js'
-// import { isValidObjectId } from '../util/userValidate.js'
+
 import { dataValidation, isValidObjectId, isValidPhone, isValidEmail, isValidPass, isValidTitleEnum, isValidText, isValidName, isValidReviews, isValidIsbn, isValidDate, } from '../util/bookValidate.js'
 
 // -------------------------------------------createBook---------------------------------------------
@@ -8,6 +8,7 @@ import { dataValidation, isValidObjectId, isValidPhone, isValidEmail, isValidPas
 const createBook = async (req, res) => {
   try {
     const reqBody = req.body
+    // console.log(reqBody);
     const { title, excerpt, userId, ISBN, category, subcategory, reviews, releasedAt } = reqBody
 
     //------------------------------body validation-----------------------------------
@@ -58,8 +59,8 @@ const createBook = async (req, res) => {
       return res.status(400).send({ status: false, message: 'subcategory isn\'t valid' })
 
     //---------------------------------reviews validation------------------------------
-    if (!(reviews >= 1 && reviews <= 5))
-      return res.status(400).send({ status: false, message: 'give review 1 to 5' })
+    // if (!(reviews >= 1 && reviews <= 5))
+    //   return res.status(400).send({ status: false, message: 'give review 1 to 5' })
     
     //--------------------------------- finding user------------------------------
     if (!isValidDate(releasedAt))
@@ -94,7 +95,35 @@ const createBook = async (req, res) => {
   }
 }
 
+//=====================================================================================================
+//GET /books BY-QUERY
+//by richard
 
+let getBooksByQuery = async (req,res)=>{
+
+  let datas = req.query
+
+let {userId,category,subcategory }= datas
+
+
+  let book = await bookModel.findOne({userId:userId})
+  let user = await userModel.findById(userId)
+
+  // if(book.isDeleted == true)
+
+  // return res.send({message:`The Book ${book.title} By ${user.title}.${user.name} has been Deleted`})
+
+  
+
+  let result = await bookModel.find({$or:[{userId:userId},{category:category}]}).select({createdAt:0,updatedAt:0,__v:0,subcategory:0,ISBN:0}).sort({title:1})
+
+
+  return res.send({data:result})
+
+}
+
+
+//============================================================================================================================================
 //GET /books/:bookId 
 //BY Richard
 
@@ -128,7 +157,7 @@ const getBook = async (req, res) => {
 }
 
 
-//========================================= book/put ==================================>
+//========================================= book/put =========================================================================>
 
 const updateBook = async (req, res) => {
   try {
@@ -240,7 +269,7 @@ const updateBook = async (req, res) => {
 };
 
 
-//---------------------------------------------Book-----------------------------------------------
+//---------------------------------------------DeleteBook------------------------------------------------------------------------------------------
 //SHAYAN BISWAS
 const deleteBook = async (req, res) => {
   try {
@@ -265,4 +294,4 @@ const deleteBook = async (req, res) => {
 }
 
 
-export { createBook, getBook, updateBook, deleteBook }
+export { createBook,getBooksByQuery, getBook, updateBook, deleteBook }

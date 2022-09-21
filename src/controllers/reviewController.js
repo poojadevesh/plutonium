@@ -1,15 +1,41 @@
 import bookModel from '../models/bookModel.js'
 import review from '../models/reviewModel.js'
 
-import {isValidObjectId } from '../util/userValidate.js'
+import {isValidObjectId} from '../util/userValidate.js'
 
 const addReview = async(req,res)=>{
-    try{ let id = req.params.bookId
+    try{ 
+        let id = req.params.bookId
 
         let datas = req.body
+
+        let{reviewedBy,rating,review} = datas
+
+        if(!isValidObjectId(id))
+        return res.status(400).send({status:false,message:`The BookId is Invalid`})
+
+        if(!reviewedBy)
+        return res.status(400).send({status:false,message:`The Reviewer Name is Required`})
+
+        if(!rating)
+        return res.status(400).send({status:false,message:`The Rating Field is Required`})
+
+        if(!review)
+        return res.status(400).send({status:false,message:`The review Field is Required`})
+
+        if(isValidReview(review))
+        return res.status(400).send({status:false,message:`The review rating should be 0 to 5)`})
+
+        
+
+
+
+
+         let book = await bookModel.findOneAndUpdate({_id:id},{$inc:{reviews:1}},{new:true})
  
-        let book = await review.findOneAndUpdate({_id:id},{$inc:{}})
- 
+        if(book.isDeleted == true)
+        return res.status(404).send({status:false,message:`The book ${book.title} is Deleted `})
+
         datas.bookId = id
         let result = await review.create(datas)
         
@@ -19,6 +45,16 @@ const addReview = async(req,res)=>{
  } catch(err){
      return res.status(500).send({status:false,message:err.message})
  }}
+
+
+
+
+
+
+
+
+
+
 
 
 //============================================================================================================================
