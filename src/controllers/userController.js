@@ -1,9 +1,9 @@
-import user from  '../models/userModel.js'
+import userModel from  '../models/userModel.js'
 import validEmail from 'email-validator'
-
+import jwt from "jsonwebtoken"
 
 import {isValidBody,isValidEnum,isValidNumber,isValidPwd, isValidStr} from '../util/userValidate.js'
-//By -Richard
+
 const createUser = async (req,res)=>{
 
     try{
@@ -35,7 +35,7 @@ const createUser = async (req,res)=>{
         return res.status(400).send({status:false,message:" please enter 10 digit IND mobile number"})
 
 
-        let uniquePhoneNo = await user.findOne({phone:phone})
+        let uniquePhoneNo = await userModel.findOne({phone:phone})
         if(uniquePhoneNo)
         return res.status(400).send({status:false,message:"phoneNo should be  unique"})
 
@@ -45,7 +45,7 @@ const createUser = async (req,res)=>{
         if(!validEmail.validate(email)) return res.status(400).send({ status: false, msg: `your Email-Id ${email}is invalid` })
         
 
-        let uniqueEmail = await user.findOne({email:email})
+        let uniqueEmail = await userModel.findOne({email:email})
         if(uniqueEmail)
         return res.status(400).send({status:false,message:"Email already registred Please Sign-In"})
        
@@ -57,7 +57,7 @@ const createUser = async (req,res)=>{
         return res.status(400).send({status:false,message:"Password should be minLen 8, maxLen 15 long and must contain one of 0-9,A-Z,a-z & special char"})
 
        
-     let result = await user.create(body)
+     let result = await userModel.create(body)
 
      return res.status(201).send({status:true,message: "Registration done Successfully",data:result})
 
@@ -68,30 +68,10 @@ const createUser = async (req,res)=>{
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//========================POST /login===============================
+//========================POST /login===================================================>
+import {isValidEmail,isValidPass,isValid} from "../util/bookValidate.js"
 const userLogin=async (req,res)=>{
+try{
 const { email, password } = req.body;
 
 if (Object.keys(req.body).length == 0) {
@@ -107,25 +87,14 @@ if (!isValid(password)) {
     return res.status(400).send({ status: false, msg: "Password Required." })
 }
 
-const validateEmail = function (mail) {
-    if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(mail)) {
-        return true;
-    }
-}
-
-if (!validateEmail(email)) {
+if (!isValidEmail(email)) {
     return res
         .status(400)
         .send({ status: false, message: "Incorrect Email !!!" })
 }
 
-const validatePassword = function (password) {
-    if (/^[A-Za-z\W0-9]{8,15}$/.test(password)) {
-        return true;
-    }
-}
 
-if (!validatePassword(password)) {
+if (!isValidPass(password)) {
     return res
         .status(400)
         .send({ status: false, message: "Incorrect Password !!!" })
@@ -141,21 +110,21 @@ if (!user) {
         message: "Authentication failed!!!, Incorrect Email or Password !!!",
     })
 }
-
-let token = jwt.sign(
-    {
-        userId: user._id,
-        iat: Math.floor(Date.now() / 1000),
-        exp: Math.floor((Date.now() / 1000) + 180 * 60),
-    },
-    "Room 56"
+let payload={
+userId: user._id,
+iat: Math.floor(Date.now() / 1000),
+exp: Math.floor((Date.now() / 1000) + 180 * 60),
+}
+let token = jwt.sign(payload,  "Room 56"
 )
 return res
     .status(200)
-    .send({ status: true, message: "Login Successfully", token: token });
-};
-
-
+    .send({ status: true, message: "Login Successfully", token: token , exp:payload.exp });
+}
+catch(err){
+    res.status(500).send({status:false,message:err.message})
+}
+}
 
 export { createUser,userLogin}
 

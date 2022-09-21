@@ -1,13 +1,14 @@
 import bookModel from '../models/bookModel.js'
 import userModel from '../models/userModel.js'
 import { isValidObjectId } from '../util/userValidate.js'
-import { dataValidation, isValidObjectId, isValidPhone, isValidEmail, isValidPwd, isValidTitleEnum, isValidText, isValidName, isValidReviews, isValidIsbn } from '../util/bookValidate.js'
+//import {checksum} from 'isbn-validation'
+import { dataValidation,  isValidPhone, isValidEmail, isValidTitleEnum, isValidText, isValidName, isValidReviews, isValidIsbn, isValid, } from '../util/bookValidate.js'
 
 // -----------------data present or not or extra in the body-------------------
 const createBook = async (req, res) => {
     try {
         const reqBody = req.body
-        const { title, excerpt, userId, ISBN, category, subcategory, reviews } = reqBody
+        const { title, excerpt, userId, ISBN, category, subcategory, reviews,isDeleted,releasedAt } = reqBody
 
         //------------------------------body validation-----------------------------------
         if (!dataValidation(reqBody))
@@ -111,11 +112,12 @@ const getBook = async(req,res)=>{
 
 //========================================= book/put ==================================>
 
+
 const updateBook = async (req, res) => {
     try {
       let bookId = req.params.bookId;
-  
-      if (!ObjectId.isValid(bookId)) {
+       console.log(bookId)
+      if (!isValidObjectId(bookId)) {
         return res.status(400).send({ status: false, message: "Book Id is Invalid" });
       }
   
@@ -219,11 +221,6 @@ const updateBook = async (req, res) => {
       return res.status(500).send({ status: false, message: err.message });
     }
   };
-
-
-
-
-
 
 
 export { createBook,getBook,updateBook}
