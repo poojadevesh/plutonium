@@ -70,6 +70,8 @@ const createUser = async (req,res)=>{
 
 //========================POST /login===================================================>
 import {isValidEmail,isValidPass,isValid} from "../util/bookValidate.js"
+//========================POST /login===============================
+
 const userLogin=async (req,res)=>{
 try{
 const { email, password } = req.body;
@@ -113,7 +115,7 @@ if (!user) {
 let payload={
 userId: user._id,
 iat: Math.floor(Date.now() / 1000),
-exp: Math.floor((Date.now() / 1000) + 180 * 60),
+exp: Math.floor((Date.now() / 1000) +( 180 * 60)),
 }
 let token = jwt.sign(payload,  "Room 56"
 )

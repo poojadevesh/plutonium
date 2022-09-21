@@ -60,7 +60,7 @@ const isValidReviews = (review) => {
 //-------------------------------ISBN----------------------------
 const isValidIsbn = (value) => {
     const isbn = value.trim()
-    if (typeof isbn == "string" && isbn.match(/^[ 0-9_- ]{13,13}$/))
+    if (typeof isbn == "string" && isbn.match(/^(?=(?:\D*\d){10}(?:(?:\D*\d){3})?$)[\d-]+$/))
         return true
     return false
 }
@@ -79,3 +79,8 @@ const isValid = function (value) {
 //     return true
 // };
 export { dataValidation, isValidObjectId, isValidPhone, isValidEmail, isValidPass, isValidTitleEnum, isValidText, isValidName, isValidReviews, isValidIsbn,isValid  }
+const isValidDate = (date)=>{
+    const regx = /^\d{4}\-(0[1-9]|1[012])\-(0[1-9]|[12][0-9]|3[01])$/
+    return regx.test(date)
+};
+export { dataValidation, isValidObjectId, isValidPhone, isValidEmail, isValidPass, isValidTitleEnum, isValidText, isValidName, isValidReviews, isValidIsbn, isValidDate  }
