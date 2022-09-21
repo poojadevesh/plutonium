@@ -106,7 +106,7 @@ let payload={
      userId: user._id,
     iat: Math.floor(Date.now() / 1000),
 }
-let token = jwt.sign(payload, "Room 56",{ expiresIn: '1h' })
+let token = jwt.sign(payload, "Room 56",{ expiresIn: '1m' })
 return res
     .status(200)
     .send({ status: true, message: "Login Successfully", token: token , exp:payload.exp });

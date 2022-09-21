@@ -113,8 +113,6 @@ let {userId,category,subcategory }= datas
 
   // return res.send({message:`The Book ${book.title} By ${user.title}.${user.name} has been Deleted`})
 
-  
-
   let result = await bookModel.find({$or:[{userId:userId},{category:category}]}).select({createdAt:0,updatedAt:0,__v:0,subcategory:0,ISBN:0}).sort({title:1})
 
 
@@ -144,8 +142,8 @@ const getBook = async (req, res) => {
       return res.status(404).send({ status: false, message: `${bookId.title} Book is deleted` })
 
     let findBook = await bookModel.findById(bookID).select({ __v: 0 })
-    let review = 'goood'
-    // console.log(findBook);
+    let review = 
+   
     findBook._doc.review = review
 
     res.status(200).send({ status: true, message: 'This Book is Available', data: findBook })

@@ -1,6 +1,9 @@
+import validate from 'validator'
 import bookModel from '../models/bookModel.js'
 import reviewModel from '../models/reviewModel.js'
-import {isValidObjectId,isValidRating} from '../util/reviewValidate.js';
+import {isValidRating} from '../util/reviewValidate.js';
+
+
 
 const addReview = async(req,res)=>{
     try{ 
@@ -10,12 +13,13 @@ const addReview = async(req,res)=>{
 
         let{reviewedBy,rating,review} = datas
 
-        if(!isValidObjectId(id))
+        if(!validate.isMongoId(id))
         return res.status(400).send({status:false,message:`The BookId is Invalid`})
-        
+    
         let findBook = await bookModel.findById(id)
+        
         if(!findBook)
-        return res.status(400).send({status:false,message:`Book Not Found`})
+        return res.status(404).send({status:false,message:`Book Not Found`})
 
         if(findBook.isDeleted == true)
         return res.status(404).send({status:false,message:`The book ${findBook.title} is Deleted `})
