@@ -83,4 +83,11 @@ const isValidDate = (date)=>{
     const regx = /^\d{4}\-(0[1-9]|1[012])\-(0[1-9]|[12][0-9]|3[01])$/
     return regx.test(date)
 };
-export { dataValidation, isValidObjectId, isValidPhone, isValidEmail, isValidPass, isValidTitleEnum, isValidText, isValidName, isValidReviews, isValidIsbn, isValidDate  }
+
+const isValidRating= (rating)=>{
+    let value = /^([1-5]|1[05])$/
+    if(value.test(rating))
+    return false
+    return true
+}
+export {isValidRating, dataValidation, isValidObjectId, isValidPhone, isValidEmail, isValidPass, isValidTitleEnum, isValidText, isValidName, isValidReviews, isValidIsbn, isValidDate  }

@@ -1,7 +1,6 @@
 import bookModel from '../models/bookModel.js'
-import review from '../models/reviewModel.js'
-
-import {isValidObjectId} from '../util/userValidate.js'
+import reviewModel from '../models/reviewModel.js'
+import {isValidObjectId,isValidRating} from '../util/reviewValidate.js';
 
 const addReview = async(req,res)=>{
     try{ 
@@ -13,6 +12,13 @@ const addReview = async(req,res)=>{
 
         if(!isValidObjectId(id))
         return res.status(400).send({status:false,message:`The BookId is Invalid`})
+        
+        let findBook = await bookModel.findById(id)
+        if(!findBook)
+        return res.status(400).send({status:false,message:`Book Not Found`})
+
+        if(findBook.isDeleted == true)
+        return res.status(404).send({status:false,message:`The book ${findBook.title} is Deleted `})
 
         if(!reviewedBy)
         return res.status(400).send({status:false,message:`The Reviewer Name is Required`})
@@ -23,39 +29,20 @@ const addReview = async(req,res)=>{
         if(!review)
         return res.status(400).send({status:false,message:`The review Field is Required`})
 
-        if(isValidReview(review))
+        if(isValidRating(rating))
         return res.status(400).send({status:false,message:`The review rating should be 0 to 5)`})
 
-        
-
-
-
-
-         let book = await bookModel.findOneAndUpdate({_id:id},{$inc:{reviews:1}},{new:true})
- 
-        if(book.isDeleted == true)
-        return res.status(404).send({status:false,message:`The book ${book.title} is Deleted `})
-
         datas.bookId = id
-        let result = await review.create(datas)
-        
- 
-         res.status(201).send({status:true,message:"Review Added Sucessfully",data:result})     
+        let result = await reviewModel.create(datas)
+        await bookModel.findOneAndUpdate({_id:id},{$inc:{reviews:1}},{new:true})
+
+        let finalOp = await reviewModel.findOne({_id:result._id}).select({isDeleted: 0, createdAt:0, updatedAt: 0,__v:0})
+
+         res.status(201).send({status:true,message:"Review Added Sucessfully",data:finalOp})     
     
- } catch(err){
+ }catch(err){      
      return res.status(500).send({status:false,message:err.message})
  }}
-
-
-
-
-
-
-//<================================================== delete +============================>
-
-
-
-
 
 
 //============================================================================================================================
