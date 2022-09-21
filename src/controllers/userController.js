@@ -80,25 +80,17 @@ if (Object.keys(req.body).length == 0) {
         .send({ status: false, message: "Enter Login Credentials." })
 }
 
-if (!isValid(email)) {
+if (!email) {
     return res.status(400).send({ status: false, msg: "Email Required." })
 }
-if (!isValid(password)) {
+if (!password) {
     return res.status(400).send({ status: false, msg: "Password Required." })
 }
 
-if (!isValidEmail(email)) {
-    return res
-        .status(400)
-        .send({ status: false, message: "Incorrect Email !!!" })
-}
+if(!validEmail.validate(email)) return res.status(400).send({ status: false, msg: `your Email-Id ${email}is invalid` })
 
-
-if (!isValidPass(password)) {
-    return res
-        .status(400)
-        .send({ status: false, message: "Incorrect Password !!!" })
-}
+if(!isValidPwd(password))
+return res.status(400).send({status:false,message:"Password should be minLen 8, maxLen 15 long and must contain one of 0-9,A-Z,a-z & special char"})
 
 let user = await userModel
     .findOne({ email: email, password: password })
@@ -111,12 +103,10 @@ if (!user) {
     })
 }
 let payload={
-userId: user._id,
-iat: Math.floor(Date.now() / 1000),
-exp: Math.floor((Date.now() / 1000) +( 180 * 60)),
+     userId: user._id,
+    iat: Math.floor(Date.now() / 1000),
 }
-let token = jwt.sign(payload,  "Room 56"
-)
+let token = jwt.sign(payload, "Room 56",{ expiresIn: '1h' })
 return res
     .status(200)
     .send({ status: true, message: "Login Successfully", token: token , exp:payload.exp });
