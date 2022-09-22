@@ -1,10 +1,10 @@
 import bookModel from '../models/bookModel.js'
 import userModel from '../models/userModel.js'
 
-//import { dataValidation, isValidObjectId, isValidPhone, isValidEmail, isValidPass, isValidTitleEnum, isValidText, isValidName, isValidReviews, isValidIsbn, isValidDate, } from '../util/bookValidate.js'
+import { dataValidation, isValidObjectId, isValidPhone, isValidEmail, isValidPass, isValidTitleEnum, isValidText, isValidName, isValidReviews, isValidIsbn, isValidDate, } from '../util/bookValidate.js'
 
 // -------------------------------------------createBook---------------------------------------------
-//SHAYAN BISWAS
+
 const createBook = async (req, res) => {
   try {
     const reqBody = req.body
@@ -91,13 +91,13 @@ const createBook = async (req, res) => {
     res.status(201).send({ status: true, message: 'Book created successfully', data: saveData })
   }
   catch (err) {
-    res.status(500).send({ status: false, error: err })
+    res.status(500).send({ status: false, error: err.message })
   }
 }
 
 //=====================================================================================================
 //GET /books BY-QUERY
-//by richard
+
 
 let getBooksByQuery = async (req,res)=>{
 
@@ -125,7 +125,7 @@ let {userId,category,subcategory }= datas
 
 //============================================================================================================================================
 //GET /books/:bookId 
-//BY Richard
+
 
 const getBook = async (req, res) => {
 
@@ -164,10 +164,10 @@ const updateBook = async (req, res) => {
    
   try {
     let bookId = req.params.bookId;
-
-    if (!ObjectId.isValid(bookId)) {
-      return res.status(400).send({ status: false, message: "Book Id is Invalid" });
-    }
+    
+    // if (!isValidObjectId(userId)) {
+    //   return res.status(400).send({ status: false, message: "Book Id is Invalid" });
+    // }
 
     let bookDetailToUpdate = req.body;
     if (Object.keys(bookDetailToUpdate).length === 0) {

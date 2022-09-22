@@ -1,5 +1,5 @@
 import mongoose from 'mongoose'
-
+import isValid from "isvalid"
 // ------------dataValidation-----------
 const dataValidation = (data) => {
     if (Object.keys(data).length != 0 )
@@ -65,7 +65,7 @@ const isValidIsbn = (value) => {
     return false
 }
 //=========================================body checking =================================>
-const isValid = function (value) {
+const isValidBody = function (value) {
     if (typeof value === "undefined" || value === null) return false;
     if (typeof value === "string" && value.trim().length === 0) return false;
     return true;
@@ -82,4 +82,17 @@ const isValidRating= (rating)=>{
     return false
     return true
 }
-export { dataValidation, isValidObjectId, isValidPhone, isValidEmail, isValidPass, isValidTitleEnum, isValidText, isValidName, isValidReviews, isValidIsbn,isValid , }
+export {
+    dataValidation,
+    isValidObjectId,
+    isValidPhone,
+    isValidEmail,
+    isValidPass,
+    isValidTitleEnum,
+    isValidText,
+    isValidName,
+    isValidReviews,
+    isValidIsbn,
+    isValidBody,
+    isValidDate
+}

@@ -3,7 +3,7 @@ const router = express.Router()
 
 import { createUser,userLogin } from '../controllers/userController.js'
 import { createBook,getBooksByQuery,getBook,updateBook,deleteBook } from '../controllers/bookController.js'
-import {addReview} from '../controllers/reviewController.js'
+import {addReview,deleteReview} from '../controllers/reviewController.js'
 
 
 
@@ -26,6 +26,6 @@ router.delete('/books/:bookId', deleteBook)
 
 // Review API
 router.post('/books/:bookId/review',addReview)
-
+router.delete("/books/:bookId/review/:reviewId",deleteReview)
 
 export default router
