@@ -1,122 +1,208 @@
-import userModel from  '../models/userModel.js'
-import validEmail from 'email-validator'
-import jwt from "jsonwebtoken"
+import userModel from "../models/userModel.js";
+import validEmail from "email-validator";
+import jwt from "jsonwebtoken";
 
-import {isValidBody,isValidEnum,isValidNumber,isValidPwd, isValidStr} from '../util/userValidate.js'
+import {
+  isValidBody,
+  isValidEnum,
+  isValidNumber,
+  isValidPwd,
+  isValidStr,
+} from "../util/userValidate.js";
 
 //POST /register
 //By Richard
-const createUser = async (req,res)=>{
+const createUser = async (req, res) => {
+  try {
+    if (isValidBody(body))
+      return res
+        .status(400)
+        .send({ status: false, message: "Enter user details" });
 
-    try{
-        let body = req.body
-        let{ title,name,phone,email,password} = body
+    if (!title)
+      return res
+        .status(400)
+        .send({ status: false, message: "title is  mandatory" });
 
-        if(isValidBody(body))
-        return res.status(400).send({ status: false, message: "Enter user details" });
+    if (isValidEnum(title))
+      return res
+        .status(400)
+        .send({ status: false, msg: "Title should be of Mr/Mrs/Miss" });
 
-        if(!title)
-        return res.status(400).send({status:false,message:"title is  mandatory"})
+    if (!name)
+      return res
+        .status(400)
+        .send({ status: false, message: "name is  mandatory" });
 
+    if (isValidStr(name))
+      return res
+        .status(400)
+        .send({ status: false, msg: "name should be only string " });
 
-        if(isValidEnum(title))
-        return res.status(400).send({ status: false, msg: "Title should be of Mr/Mrs/Miss" });
+    if (!phone)
+      return res
+        .status(400)
+        .send({ status: false, message: "phone is  mandatory" });
 
+    if (isValidNumber(phone))
+      return res.status(400).send({
+        status: false,
+        message: " please enter 10 digit IND mobile number",
+      });
 
-        if(!name)
-        return res.status(400).send({status:false,message:"name is  mandatory"})
+    // let uniquePhoneNo = await userModel.findOne({ phone: phone });
+    // if (uniquePhoneNo)
+    //   return res
+    //     .status(400)
+    //     .send({ status: false, message: "phoneNo should be  unique" });
 
-        if(isValidStr(name))
-         return res.status(400).send({ status: false, msg: "name should be only string " });
+    if (!phone)
+      return res
+        .status(400)
+        .send({ status: false, message: "Phone is  mandatory" });
 
-        if(!phone)
-        return res.status(400).send({status:false,message:"Phone is  mandatory"})
+    if (!validEmail.validate(email))
+      return res
+        .status(400)
+        .send({ status: false, msg: `your Email-Id ${email}is invalid` });
 
+    if (isValidNumber(phone))
+      return res
+        .status(400)
+        .send({
+          status: false,
+          message: " Please enter 10 digit IND mobile number",
+        });
 
-        if(isValidNumber(phone))
-        return res.status(400).send({status:false,message:" Please enter 10 digit IND mobile number"})
+    if (!password)
+      return res
+        .status(400)
+        .send({ status: false, message: "password is  mandatory" });
 
+    let uniquePhoneNo = await userModel.findOne({ phone: phone });
+    if (uniquePhoneNo)
+      return res
+        .status(400)
+        .send({ status: false, message: "PhoneNo should be  unique" });
 
-        let uniquePhoneNo = await userModel.findOne({phone:phone})
-        if(uniquePhoneNo)
-        return res.status(400).send({status:false,message:"PhoneNo should be  unique"})
+    if (!email)
+      return res
+        .status(400)
+        .send({ status: false, message: "Email is  mandatory" });
 
-        if(!email)
-        return res.status(400).send({status:false,message:"Email is  mandatory"})
+    if (!validEmail.validate(email))
+      return res
+        .status(400)
+        .send({ status: false, msg: `Your Email-Id ${email}is invalid` });
 
-        if(!validEmail.validate(email)) return res.status(400).send({ status: false, msg: `Your Email-Id ${email}is invalid` })
-        
+    let uniqueEmail = await userModel.findOne({ email: email });
+    if (uniqueEmail)
+      return res
+        .status(400)
+        .send({
+          status: false,
+          message: "Email already registred Please Sign-In",
+        });
 
-        let uniqueEmail = await userModel.findOne({email:email})
-        if(uniqueEmail)
-        return res.status(400).send({status:false,message:"Email already registred Please Sign-In"})
-       
-       
-        if(!password)
-        return res.status(400).send({status:false,message:"password is  mandatory"})
+    if (!password)
+      return res
+        .status(400)
+        .send({ status: false, message: "password is  mandatory" });
 
-        if(!isValidPwd(password))
-        return res.status(400).send({status:false,message:"Password should be minLen 8, maxLen 15 long and must contain one of 0-9,A-Z,a-z & special char"})
+    if (!isValidPwd(password))
+      return res
+        .status(400)
+        .send({
+          status: false,
+          message:
+            "Password should be minLen 8, maxLen 15 long and must contain one of 0-9,A-Z,a-z & special char",
+        });
 
-       
-     let result = await userModel.create(body)
+    let result = await userModel.create(body);
 
-     return res.status(201).send({status:true,message: "Registration done Successfully",data:result})
+    return res
+      .status(201)
+      .send({
+        status: true,
+        message: "Registration done Successfully",
+        data: result,
+      });
+  } catch (err) {
+    return res.status(500).send({ status: false, message: err.message });
+  }
+};
 
-}
-    catch(err){
-        return res.status(500).send({status:false,message:err.message})
-}}
+//     let result = await userModel.create(body);
 
-
+//     return res.status(201).send({
+//       status: true,
+//       message: "Registration done Successfully",
+//       data: result,
+//     });
+//   } catch (err) {
+//     return res.status(500).send({ status: false, message: err.message });
+//   }
+// };
 
 //========================POST /login===============================
 
-const userLogin=async (req,res)=>{
-try{
-const { email, password } = req.body;
+const userLogin = async (req, res) => {
+  try {
+    const { email, password } = req.body;
 
-if (Object.keys(req.body).length == 0) {
-    return res
+    if (Object.keys(req.body).length == 0) {
+      return res
         .status(400)
-        .send({ status: false, message: "Enter Login Credentials." })
-}
+        .send({ status: false, message: "Enter Login Credentials." });
+    }
 
-if (!email) {
-    return res.status(400).send({ status: false, msg: "Email Required." })
-}
-if (!password) {
-    return res.status(400).send({ status: false, msg: "Password Required." })
-}
+    if (!email) {
+      return res.status(400).send({ status: false, msg: "Email Required." });
+    }
+    if (!password) {
+      return res.status(400).send({ status: false, msg: "Password Required." });
+    }
 
-if(!validEmail.validate(email)) return res.status(400).send({ status: false, msg: `your Email-Id ${email}is invalid` })
+    if (!validEmail.validate(email))
+      return res
+        .status(400)
+        .send({ status: false, msg: `your Email-Id ${email}is invalid` });
 
-if(!isValidPwd(password))
-return res.status(400).send({status:false,message:"Password should be minLen 8, maxLen 15 long and must contain one of 0-9,A-Z,a-z & special char"})
+    if (!isValidPwd(password))
+      return res.status(400).send({
+        status: false,
+        message:
+          "Password should be minLen 8, maxLen 15 long and must contain one of 0-9,A-Z,a-z & special char",
+      });
 
-let user = await userModel
-    .findOne({ email: email, password: password })
-    .select({ _id: 1 })
+    let user = await userModel
+      .findOne({ email: email, password: password })
+      .select({ _id: 1 });
 
-if (!user) {
-    return res.status(401).send({
+    if (!user) {
+      return res.status(401).send({
         status: false,
         message: "Authentication failed!!!, Incorrect Email or Password !!!",
-    })
-}
-let payload={
-     userId: user._id,
-    iat: Math.floor(Date.now() / 1000),
-}
-let token = jwt.sign(payload, "Room 56",{ expiresIn: '1m' })
-return res
-    .status(200)
-    .send({ status: true, message: "Login Successfully", token: token , exp:payload.exp });
-}
-catch(err){
-    res.status(500).send({status:false,message:err.message})
-}
-}
+      });
+    }
+    let payload = {
+      userId: user._id,
+      iat: Math.floor(Date.now() / 1000),
+    };
+    let token = jwt.sign(payload, "Room 56", { expiresIn: "1m" });
+    return res
+      .status(200)
+      .send({
+        status: true,
+        message: "Login Successfully",
+        token: token,
+        exp: payload.exp,
+      });
+  } catch (err) {
+    res.status(500).send({ status: false, message: err.message });
+  }
+};
 
-export { createUser,userLogin}
+export { createUser, userLogin };
+
 
