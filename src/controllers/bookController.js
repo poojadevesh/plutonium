@@ -127,7 +127,7 @@ let {userId,category,subcategory }= datas
 //BY Richard
 
 const getBook = async (req, res) => {
-
+// TOdo compelete valiataion
   try {
 
     let bookID = req.params.bookId
