@@ -88,14 +88,6 @@ const createUser = async (req, res) => {
   }
 };
 
-//     let result = await userModel.create(body);
-
-//     return res.status(201).send({status: true,message: "Registration done Successfully",data: result,});
-
-//   } catch (err) {
-//     return res.status(500).send({ status: false, message: err.message });
-//   }
-// };
 
 //========================POST /login===============================
 
