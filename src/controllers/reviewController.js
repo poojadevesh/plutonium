@@ -5,7 +5,6 @@ import { isValidRevDate } from '../util/reviewValidate.js'
 import { dataValidation, isValidObjectId, isValidName, isValidRating, isValidDate, } from '../util/bookValidate.js'
 
 //POST /books/:bookId/review
-//By Richard
 
 const addReview = async (req, res) => {
     try {
@@ -67,7 +66,6 @@ const addReview = async (req, res) => {
 //============================================================================================================================
 
 //----------------------------------------updateReview----------------------------------------------
-// SHAYAN BISWAS
 const updateReview = async (req, res) => {
     try {
         const reqBody = req.body
