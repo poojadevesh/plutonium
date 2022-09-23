@@ -4,7 +4,7 @@ import route from './src/routes/route.js'
 
 const app = express()
 const PORT = 3000
-const URI = 'mongodb+srv://riju:riju@cluster0.s4hmv.mongodb.net/group56Database'
+const URI = 'mongodb+srv://project3:dataBase52@cluster0.iu3wti0.mongodb.net/GROUP52DATA-BASE'
 
 app.use(express.json())
 
