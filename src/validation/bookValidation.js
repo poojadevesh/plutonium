@@ -82,5 +82,5 @@ const isValidRating= (rating)=>{
     return false
     return true
 }
-module.exports = {isValidRating, dataValidation, isValidObjectId, isValidPhone, isValidEmail,
+module.exports = {isValidRating, isValid,dataValidation, isValidObjectId, isValidPhone, isValidEmail,
  isValidPass, isValidTitleEnum, isValidText, isValidName, isValidReviews, isValidISBN, isValidDate}

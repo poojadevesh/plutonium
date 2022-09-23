@@ -1,88 +1,121 @@
-const userModel = require('../models/userModel')
-const bookModel = require('../models/bookModel')
-const jwt = require('jsonwebtoken')
+const userModel = require("../models/userModel.js");
+const jwt = require("jsonwebtoken");
 
+const {isValidBody,isValidEnum,isValidNumber, isValidPwd, isValidStr,} = require("../util/userValidate.js");
+const {isValidEmail} = 'require()../util/bookValidate.js)'
 
-const {isValidBody,isValidStr,isValidEnum,isValidNumber, isValidPwd,isValidObjectId} = require('../validation/userValidation')
+//==========================POST /register=====================================
 
-
-
-
-//--------------createUser----------------//
-
-
-const createUser = async function (req, res) {
+const createUser = async (req, res) => {
   try {
-    const data = req.body;
-    const { title, name, phone, email, password, address } = data;
+    const reqBody = req.body
+    const { title, name, phone, email, password } = reqBody
 
-    const objKey = Object.keys(data).length;
+    if (isValidBody(reqBody))
+      return res.status(400).send({ status: false, message: "Enter user details" });
 
-    if (objKey == 0)
-      return res.status(400).send({ status: false, msg: "Please fill data" });
+    if (!title)
+      return res.status(400).send({ status: false, message: "title is  mandatory" });
 
-    //title
-    if (!title==title || title=="")return res.status(400).send({ status: false, message: "title is required" });
+    if (isValidEnum(title))
+      return res.status(400).send({ status: false, msg: "Title should be of Mr/Mrs/Miss" });
 
-    //name
-    if (!name==name || name =="")return res.status(400).send({ status: false, message: "Name is required" });
-   if(!checkName.test(name)) return res.status(400).send({ status: false, message: "please use correct name" })
-    //phoneNum
-    if (!phone==phone || phone =="") return res.status(400).send({ status: false, message: "phone-number is required" });
-    if(!phoneNum.test(phone)) return res.status(400).send({ status: false, message: "please use correct phone" })
+    if (!name)
+      return res.status(400).send({ status: false, message: "name is  mandatory" });
 
-    //email
-    if (!email==email || email=="") return res.status(400).send({ status: false, message: "email is required" });
-    if  (!emailMatch.test(email))return res.status(400).send({ status: false, message: "please use correct email" })
-    //password
-    if (!password==password || password =="")return res.status(400).send({ status: false, message: "password is required" });
-   // if (!passwordCheck.test(password))return res.status(400).send({ status: false, message: "please use correct password" })
+    if (isValidStr(name))
+      return res.status(400).send({ status: false, msg: "name should be only string " });
 
+    if (!phone)
+      return res.status(400).send({ status: false, message: "phone is  mandatory" });
 
-    address;
-    if (!address.street==address.street)return res.status(400).send({ status: false, message: "address is required" });
-    if (!checkName.test(data.address.city)) return res.status(400).send({ status: false, message: "enter city name in valid format" });
-    if (!/^\d{6}$/.test(data.address.pincode))
-        return res.status(400).send({ status: false, message: "only six number is accepted in pincode " });
+    if (isValidNumber(phone))
+      return res.status(400).send({ status: false, message: " please enter 10 digit IND mobile number", });
 
+    // let uniquePhoneNo = await userModel.findOne({ phone: phone });
+    // if (uniquePhoneNo)
+    //   return res.status(400).send({ status: false, message: "phoneNo should be  unique" });
 
+    // if (!phone)
+    //   return res.status(400).send({ status: false, message: "Phone is  mandatory" });
+    
+    if (!email)
+      return res.status(400).send({ status: false, message: "email is  mandatory" });
 
-    const CreatedData = await userModel.create(data);
-    return res.status(201).send({ status: true, message: "success", data: CreatedData });
+    if (!isValidEmail(email))
+      return res.status(400).send({ status: false, msg: `your Email-Id '${email}' is invalid` });
+
+    if (isValidNumber(phone))
+      return res.status(400).send({ status: false, message: " Please enter 10 digit IND mobile number", });
+
+    if (!password)
+      return res.status(400).send({ status: false, message: "password is  mandatory" });
+
+    let uniquePhoneNo = await userModel.findOne({ phone: phone });
+
+    if (uniquePhoneNo)
+      return res.status(400).send({ status: false, message: "PhoneNo should be  unique" });
+
+    if (!email)
+      return res.status(400).send({ status: false, message: "Email is  mandatory" });
+
+    if (!isValidEmail(email))
+      return res.status(400).send({ status: false, msg: `Your Email-Id ${email}is invalid` });
+
+    const uniqueEmail = await userModel.findOne({ email: email });
+    
+    if (uniqueEmail)
+      return res.status(400).send({ status: false, message: "Email already registered Please Sign-In" });
+
+    if (!password)
+      return res.status(400).send({ status: false, message: "password is  mandatory" });
+
+    if (!isValidPwd(password))
+      return res.status(400).send({ status: false, message: "Password should be minLen 8, maxLen 15 long and must contain one of 0-9,A-Z,a-z & special char" });
+
+    const result = await userModel.create(reqBody);
+
+    return res.status(201).send({ status: true, message: "Registration done Successfully", data: result });
+
   } catch (err) {
-    return res.status(500).send({ status: false, msg: err.message });
+    return res.status(500).send({ status: false, message: err.message });
   }
 };
 
-//------------------login Api -------------------//
+//========================POST /login===============================
 
-const loginUser = async function(req, res) {
-    try {
+const loginUser = async (req, res) => {
+  try {
+    const { email, password } = req.body;
 
-        let { email, password } = req.body;
+    if (Object.keys(req.body).length == 0)
+      return res.status(400).send({ status: false, message: "Enter Login Credentials." });
 
-        if (!email) { return res.status(400).send({ status: false, message: ' email cant be empty' }); }
+    if (!email)
+      return res.status(400).send({ status: false, msg: "Email Required." });
 
-        if (!password) { return res.status(400).send({ status: false, message: ' password cant be empty' }); }
+    if (!password)
+      return res.status(400).send({ status: false, msg: "Password Required." });
 
-        let emailpasswordcheck = await userModel.findOne({ email: email, password: password })
+    if (!isValidEmail(email))
+      return res.status(400).send({ status: false, msg: `your Email-Id ${email}is invalid` });
 
-        if (!emailpasswordcheck) {
-            return res.status(400).send({ status: false, message: ' please provide valid userId or password' });
-        }
+    if (!isValidPwd(password))
+      return res.status(400).send({ status: false, essage: "Password should be minLen 8, maxLen 15 long and must contain one of 0-9,A-Z,a-z & special char", });
 
-        let payload = {
-             userId:emailpasswordcheck._id.toString(),
-             plateform:"management" 
-        }
-        let token = jwt.sign(payload, "GroupNo55", { expiresIn: "2hr" })
-       return res.status(201).send({status: true, message: "Sucessfull Login", data: { token: token }
+    const user = await userModel.findOne({ email: email, password: password }).select({ _id: 1 });
 
-        })
-    }
-    catch (err) {
-        return res.status(500).send({ status: false, message: err.message });
+    if (!user)
+      return res.status(401).send({ status: false, message: "Authentication failed!!!, Incorrect Email or Password !!!" });
 
-    }
-}
-module.exports = {createUser, loginUser}
+    const payload = { userId: user._id, iat: Math.floor(Date.now() / 1000) };
+    const token = jwt.sign(payload, "Room 56", { expiresIn: "1m" });
+
+    return res.status(200).send({ status: true, message: "Login Successfully", token: token, exp: payload.exp, });
+
+  } catch (err) {
+    res.status(500).send({ status: false, message: err.message });
+  }
+};
+
+module.exports = { createUser, loginUser };
