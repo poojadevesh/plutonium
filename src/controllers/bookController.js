@@ -17,12 +17,14 @@ const createBook = async (req, res) => {
 
     if (Object.keys(reqBody).length > 8)
       return res.status(400).send({ status: false, message: 'You can\'t add extra field' })
+
     //------------------------------title validation-----------------------------------
     if (!title)
       return res.status(400).send({ status: false, message: 'title isn\'t present' })
 
     if (!isValidText(title))
       return res.status(400).send({ status: false, message: 'title isn\'t valid' })
+
     //------------------------------excerpt validation-----------------------------------
     if (!isValidText(excerpt))
       return res.status(400).send({ status: false, message: 'excerpt isn\'t present' })
@@ -59,9 +61,16 @@ const createBook = async (req, res) => {
       return res.status(400).send({ status: false, message: 'subcategory isn\'t valid' })
 
     //--------------------------------- finding user------------------------------
+    if (!releasedAt)
+      return res.status(400).send({ status: false, message: 'releasedAt isn\'t present' })
+
     if (!isValidDate(releasedAt))
       return res.status(400).send({ status: false, message: 'Please use \'YYYY-MM-DD\' this format' });
-
+    
+    //--------------------------------- comparing user------------------------------
+    if (req.user.userId != userId)
+      return res.status(403).send({ status: false, msg: `This '${userId}' userId is wrong.` });
+    
     // --------------------------------- finding user------------------------------
     const existUser = await userModel.findOne({ _id: userId })
     if (!existUser)
@@ -90,7 +99,6 @@ const createBook = async (req, res) => {
     res.status(500).send({ status: false, error: err.message })
   }
 }
-
 //=====================================================================================================
 //GET /books BY-QUERY
 //by Richard
