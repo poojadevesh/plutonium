@@ -15,8 +15,7 @@ import {
 const createUser = async (req, res) => {
   try {
     if (isValidBody(body))
-      return res
-        .status(400)
+      return res.status(400)
         .send({ status: false, message: "Enter user details" });
 
     if (!title)
@@ -50,11 +49,11 @@ const createUser = async (req, res) => {
         message: " please enter 10 digit IND mobile number",
       });
 
-    // let uniquePhoneNo = await userModel.findOne({ phone: phone });
-    // if (uniquePhoneNo)
-    //   return res
-    //     .status(400)
-    //     .send({ status: false, message: "phoneNo should be  unique" });
+    let unqPhone = await userModel.findOne({ phone: phone });
+    if (unqPhone)
+      return res
+        .status(400)
+        .send({ status: false, message: "phoneNo should be  unique" });
 
     if (!phone)
       return res
@@ -67,12 +66,10 @@ const createUser = async (req, res) => {
         .send({ status: false, msg: `your Email-Id ${email}is invalid` });
 
     if (isValidNumber(phone))
-      return res
-        .status(400)
-        .send({
-          status: false,
-          message: " Please enter 10 digit IND mobile number",
-        });
+      return res.status(400).send({
+        status: false,
+        message: " Please enter 10 digit IND mobile number",
+      });
 
     if (!password)
       return res
@@ -97,12 +94,10 @@ const createUser = async (req, res) => {
 
     let uniqueEmail = await userModel.findOne({ email: email });
     if (uniqueEmail)
-      return res
-        .status(400)
-        .send({
-          status: false,
-          message: "Email already registred Please Sign-In",
-        });
+      return res.status(400).send({
+        status: false,
+        message: "Email already registred Please Sign-In",
+      });
 
     if (!password)
       return res
@@ -110,39 +105,24 @@ const createUser = async (req, res) => {
         .send({ status: false, message: "password is  mandatory" });
 
     if (!isValidPwd(password))
-      return res
-        .status(400)
-        .send({
-          status: false,
-          message:
-            "Password should be minLen 8, maxLen 15 long and must contain one of 0-9,A-Z,a-z & special char",
-        });
+      return res.status(400).send({
+        status: false,
+        message:
+          "Password should be minLen 8, maxLen 15 long and must contain one of 0-9,A-Z,a-z & special char",
+      });
 
     let result = await userModel.create(body);
 
-    return res
-      .status(201)
-      .send({
-        status: true,
-        message: "Registration done Successfully",
-        data: result,
-      });
+    return res.status(201).send({
+      status: true,
+      message: "Registration done Successfully",
+      data: result,
+    });
   } catch (err) {
     return res.status(500).send({ status: false, message: err.message });
   }
 };
 
-//     let result = await userModel.create(body);
-
-//     return res.status(201).send({
-//       status: true,
-//       message: "Registration done Successfully",
-//       data: result,
-//     });
-//   } catch (err) {
-//     return res.status(500).send({ status: false, message: err.message });
-//   }
-// };
 
 //========================POST /login===============================
 
@@ -190,19 +170,15 @@ const userLogin = async (req, res) => {
       iat: Math.floor(Date.now() / 1000),
     };
     let token = jwt.sign(payload, "Room 56", { expiresIn: "1m" });
-    return res
-      .status(200)
-      .send({
-        status: true,
-        message: "Login Successfully",
-        token: token,
-        exp: payload.exp,
-      });
+    return res.status(200).send({
+      status: true,
+      message: "Login Successfully",
+      token: token,
+      exp: payload.exp,
+    });
   } catch (err) {
     res.status(500).send({ status: false, message: err.message });
   }
 };
 
 export { createUser, userLogin };
-
-

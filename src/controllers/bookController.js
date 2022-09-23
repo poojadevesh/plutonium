@@ -9,7 +9,7 @@ import { dataValidation, isValidObjectId, isValidPhone, isValidEmail, isValidPas
 const createBook = async (req, res) => {
   try {
     const reqBody = req.body
-    // console.log(reqBody);
+
     const { title, excerpt, userId, ISBN, category, subcategory, reviews, releasedAt } = reqBody
 
     //------------------------------body validation-----------------------------------
@@ -126,8 +126,8 @@ let {userId,category,subcategory }= datas
 //GET /books/:bookId 
 
 
-const getBook = async (req, res) => {
-// TOdo compelete valiataion
+const getBookById = async (req, res) => {
+// Todo compelete valiataion
   try {
 
     let bookID = req.params.bookId
@@ -297,4 +297,5 @@ const deleteBook = async (req, res) => {
 }
 
 
-export { createBook,getBooksByQuery, getBook, updateBook, deleteBook }
+export { createBook,getBooksByQuery, getBookById
+  , updateBook, deleteBook }
