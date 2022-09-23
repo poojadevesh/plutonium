@@ -7,10 +7,8 @@ import {
   isValidNumber,
   isValidPwd,
   isValidStr,
-} from "../util/userValidate.js";
-import {
   isValidEmail
-} from '../util/bookValidate.js'
+} from "../util/userValidate.js";
 
 //POST /register
 //By Richard
