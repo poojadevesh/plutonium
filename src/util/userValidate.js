@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+const  mongoose =  require("mongoose");
 
 //isValidBody
 const  isValidBody = (object) =>{
@@ -41,6 +41,11 @@ const isValidObjectId = (ObjectId)=>{
    return mongoose.Types.ObjectId.isValid(ObjectId)
 }
 
+const isValidEmail = (email) => {
+    if (typeof email == "string" && email.match(/^([a-z0-9_.]+@[a-z]+\.[a-z]{2,3})?$/))
+        return true
+    return false
+}
 
 
-module.exports = {isValidBody,isValidStr,isValidEnum,isValidNumber, isValidPwd,isValidObjectId}
+module.exports = {isValidBody,isValidStr,isValidEnum,isValidNumber, isValidEmail,isValidPwd,isValidObjectId}

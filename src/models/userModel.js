@@ -1,93 +1,19 @@
-const mongoose = require('mongoose');
-<<<<<<< HEAD
-const userSchema =new mongoose.Schema({
-    title:{
-=======
+const mongoose = require('mongoose')
 
 const userSchema = new mongoose.Schema(
     {
-      title: {
-        type: String,
-        trim: true,
-        required: true,
-        enum: ['Mr', 'Mrs', 'Miss']
-      },
-  
-      name: {
-        type: String,
-        required: true,
-        trim: true
-      },
-  
-      phone: {
-        type: String,
-        trim: true,
-        required: true,
-        unique: true,
-      },
-  
-      email: {
->>>>>>> e66d4c70b2612921ea354dff334d2c8094ce0346
-        type: String,
-        required: true,
-        unique: true,
-        trim: true,
-<<<<<<< HEAD
-        Enum:['Mr', 'Mrs', 'Miss']
-    },
-    name:{
-        type: String,
-        required: true,
-        trim: true
-    },
-    phone:{
-        type: String,
-        required: true,
-        unique: true,
-        trim: true
-    },
-    email:{
-        type: String,
-        required: true,
-        validemail: true,
-        unique: true,
-        trim: true
-    },
-    password:{
-        type: String,
-        required: true,
-        trim: true,
-        minlength: 8,
-        maxlength: 15,
-    },
-    address:{
-        street:{type: String},
-        city:{type: String},
-        pincode:{type: String},
-    }
-
-},{timestamps:true});
-
-
-module.exports = mongoose.model("User52",userSchema)
-=======
-        lowercase:true,
-      },
-  
-      password: {
-        type: String,
-        required: true,
-        trim: true,
-        minlength:8,
-        maxlength:15,
-      },
-      address: {
-        street: { type: String },
-        city: { type: String },
-        pincode: { type: String },
-      }
+        title: { type: String, required: 'Book Title Required', enum: ['Mr', 'Mrs', 'Miss'], trim: true },
+        name: { type: String, required: 'Book Name Required', trim: true },
+        phone: { type: String, required: 'Book Phone Required', trim: true },
+        email: { type: String, required: 'Book Email Required', unique: true, trim: true },  //valid email
+        password: { type: String, required: 'Book Password Required', minlength: 8, maxlength: 15, trim: true },
+        address: {
+            street: { type: String, required: 'Book Street Required', trim: true },
+            city: { type: String, required: 'Book City Required', trim: true },
+            pincode: { type: String, required: 'Book Pincode Required', minlength: 6, trim: true }
+        }
     },
     { timestamps: true }
-  );
-  module.exports = mongoose.model("User52", userSchema)
->>>>>>> e66d4c70b2612921ea354dff334d2c8094ce0346
+)
+
+module.exports = mongoose.model('User', userSchema)

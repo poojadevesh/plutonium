@@ -1,20 +1,19 @@
 const mongoose  = require("mongoose")
-const moment = require("moment")
+const moment = ("moment")
 
-const isValidDate = (reviewedAt)=>{
+const isValidRevDate = (reviewedAt)=>{
     let value = reviewedAt;
 let check = moment(value,'YYYY-MM-DD', true).isValid();
         return check
 }
 
-//isValidObjId
 
+//isValidObjId
 const isValidObjectId = (ObjectId)=>{
     return mongoose.Types.ObjectId.isValid(ObjectId)
  }
 
 //isValidReview
-
 const isValidRating= (rating)=>{
     let value = /^([1-5]|1[05])$/
     if(value.test(rating))
@@ -22,4 +21,4 @@ const isValidRating= (rating)=>{
     return true
 }
 
- module.exports = {isValidObjectId,isValidRating,isValidDate}
+ module.exports = {isValidObjectId,isValidRating,isValidRevDate}

@@ -1,45 +1,61 @@
-const jwt = require('jsonwebtoken')
-const bookModel = require('../models/bookModel')
-const { default: mongoose } = require("mongoose");
-const isValidObjectId = (ObjectId)=>{
-  return mongoose.Types.ObjectId.isValid(ObjectId)
+const jwt = require('jsonwebtoken');
+const bookModel = require('../models/bookModel.js');
+const { isValidObjectId } = require('../util/bookValidate.js')
+
+//--------------------------------------authentication--------------------------------------
+const authentication = async (req, res, next) => {
+    try {
+        const token = req.headers["x-api-key"];
+
+        if (!token)
+            return res.status(400).send({ status: false, message: 'Token must be present' })
+
+        const decodedToken = jwt.verify(token, 'group56')
+
+        if (!decodedToken)
+            return res.status(401).send({ status: false, message: 'Authentication Failed!!!' })
+
+        req.user = decodedToken
+
+        next()
+    }
+    catch (err) {
+        if(err.message == "invalid token") return res.status(400).send({status: false, message: "Token is invalid"})
+        if(err.message == "invalid signature") return res.status(400).send({status: false, message: " Invalid signature in the Token"})
+        res.status(500).send({ status: false, error: err.message })
+    }
 }
 
-//------------------⭐Authentication⭐--------------//
+//---------------------------------------authorization---------------------------------------
+const authorization = async (req, res, next) => {
+    try {
+        const bookId = req.params.bookId
+        
 
-let authn = async (req,res,next)=>{
-try{
-let  token =  req.headers['x-auth-key']
+        if (!isValidObjectId(bookId))
+            return res.status(400).send({ status: false, message: `This ${bookId} bookId is Invalid` });
+            
+        const token = req.headers["x-api-key"];
 
+        if (!token)
+            return res.status(400).send({ status: false, message: 'Token must be present' })
 
-  if(!token) 
-    return res.status(400).send({staus:false,msg:"token is required "})
-
-    let decodedtoken =  jwt.verify(token,"GroupNo55")
-    req.decoded = decodedtoken
+        const decodedToken = jwt.verify(token, 'group56')
     
-    if(!decodedtoken) 
-    return res.status(401).send({status:false,msg:"you are Unauthorized"})
+        
+        if (!decodedToken)
+            return res.status(400).send({ status: false, message: 'Provide your own token' })
+        
+        const book = await bookModel.findById(bookId)
 
-    next()
-    }catch(err){
-    res.status(500).send({msg:err.message})
-} 
-}
+        
+        if (decodedToken.userId != book.userId)
+            return res.status(403).send({ status: false, message: 'You are not authorized' })
 
-//--------------------⭐Authorization⭐--------------------//
+        next()
+    }
+    catch (err) {
+        res.status(500).send({ status: false, error: err.message })
+      }}
 
-let authz = async (req,res,next)=>{
-
-   let userId = req.body.userId
-
-   if(!isValidObjectId(userId))
-   return res.status(400).send({status:false,msg:"enter the valid userId"})
-
-if(req.decoded.userId != userId)
-return res.status(403).send({staus:false,messg:"you are not authorized"})
-
-next()
-}
-
-module.exports = {authn,authz}
+module.exports = { authentication, authorization }
