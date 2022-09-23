@@ -1,8 +1,7 @@
 import validate from 'validator'
 import bookModel from '../models/bookModel.js'
 import reviewModel from '../models/reviewModel.js'
-// import { isValidRating, } from '../util/reviewValidate.js';
-
+import { isValidRevDate } from '../util/reviewValidate.js'
 import { dataValidation, isValidObjectId, isValidName, isValidRating, isValidDate, } from '../util/bookValidate.js'
 
 //POST /books/:bookId/review
@@ -16,8 +15,6 @@ const addReview = async (req, res) => {
 
         let { reviewedBy, reviewedAt, rating, review } = datas
 
-
-
         if (!validate.isMongoId(id))
             return res.status(400).send({ status: false, message: `This BookId '${id}' is Invalid` })
 
@@ -29,17 +26,22 @@ const addReview = async (req, res) => {
         if (findBook.isDeleted == true)
             return res.status(404).send({ status: false, message: `The book '${findBook.title}' has been Deleted ` })
 
-        if (reviewedBy == '')
-            return res.status(400).send({ status: false, message: `The Reviewer Name is Required` })
+        // if(!reviewedBy)
+         if (reviewedBy == '')
+            return res.status(400).send({ status: false, message: `The Reviewer's name is Required` })
 
         if (!reviewedAt)
             return res.status(400).send({ status: false, message: `The reviewedAt Field is Required` })
 
-        if (!isValidDate(reviewedAt))
+        // if (!isValidDate(reviewedAt))
+        if (!isValidRevDate(reviewedAt))
             return res.status(400).send({ status: false, message: `Please follow this date 'YYYY-MM-DD formate'` })
 
         if (!rating)
             return res.status(400).send({ status: false, message: `The Rating Field is Required` })
+
+            if (rating.value == 0) Object.keys(reqBody).length > 8 
+            return res.status(400).send({ status: false, message: `The Rating Field cant be 0 ` })
 
         if (!review)
             return res.status(400).send({ status: false, message: `The review Field is Required` })

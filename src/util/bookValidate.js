@@ -46,7 +46,7 @@ const isValidText = (text) => {
 
 //----------------------------------------name--------------------------------------------
 const isValidName = (name) => {
-    if ((typeof name == "String" && name.trim().length != 0 || name.match(/^[A-Za-z]{2,}$/)))
+    if ((typeof name == "String" && name.trim().length != 0 || name.match(/^[A-Z a-z]{2,}$/)))
         return true
     return false
 };

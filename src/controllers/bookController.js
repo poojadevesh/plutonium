@@ -95,34 +95,56 @@ const createBook = async (req, res) => {
 //GET /books BY-QUERY
 //by Richard
 
-let getBooks = async (req, res) => {
+// let getBooks = async (req, res) => {
 
-  let datas = req.query
+//   let datas = req.query
 
-  let { userId, category, subcategory } = datas
-
-
-  let book = await bookModel.findOne({ userId: userId })
-  let user = await userModel.findById(userId)
-
-  // if(book.isDeleted == true)
-
-  // return res.send({message:`The Book ${book.title} By ${user.title}.${user.name} has been Deleted`})
-
-  let result = await bookModel.find({ $or: [{ userId: userId }, { category: category }] }).select({ createdAt: 0, updatedAt: 0, __v: 0, subcategory: 0, ISBN: 0 }).sort({ title: 1 })
+//   let { userId, category, subcategory } = datas
 
 
-  return res.send({ data: result })
+//   let book = await bookModel.findOne({ userId: userId })
+//   let user = await userModel.findById(userId)
 
-}
+//   // if(book.isDeleted == true)
+
+//   // return res.send({message:`The Book ${book.title} By ${user.title}.${user.name} has been Deleted`})
+
+//   let result = await bookModel.find({ $or: [{ userId: userId }, { category: category }] }).select({ createdAt: 0, updatedAt: 0, __v: 0, subcategory: 0, ISBN: 0 }).sort({ title: 1 })
+
+
+//   return res.send({ data: result })
+
+// }
+
+ 
+const getBooks = async (req, res) => {
+  try {
+    const reqBody = req.query;
+    const { userId, category, subcategory } = reqBody
+    
+    if ((Object.keys(reqBody).length === 0) || (userId || category || subcategory)) {
+      
+      const books = await bookModel.find({ $and: [{ isDeleted: false }, reqBody] }).select({ title: 1, excerpt: 1, userId: 1, category: 1, releasedAt: 1, reviews: 1 }).sort({ title: 1 });
+
+      if (books.length === 0)
+        return res.status(404).send({ status: false, message: `Book is\'nt found` });
+
+      return res.status(200).send({ status: true, message: 'Books list', data: books });
+
+    } else
+      return res.status(400).send({ status: false, message: 'Invalid query' });
+
+  } catch (err) {
+    res.status(500).send({ status: false, error: err.message });
+  }
+};
 
 
 //============================================================================================================================================
 //GET /books/:bookId 
-
+//By Richard
 
 const getBookById = async (req, res) => {
-// TOdo compelete valiataion
   try {
 
     let bookID = req.params.bookId
@@ -223,8 +245,7 @@ const updateBookById = async (req, res) => {
       bookObject.releasedAt = releasedAt
     }
 
-
-
+    
     const book = await bookModel.findOne({ _id: bookId, isDeleted: false });
 
     if (!book)
