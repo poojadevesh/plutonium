@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 const mongoose = require('mongoose');
 const objectId = mongoose.Schema.Types.ObjectId;
 const reviewSchema =new mongoose.Schema({
@@ -35,3 +36,25 @@ const reviewSchema =new mongoose.Schema({
 });
 
 module.exports = mongoose.model("Review",reviewSchema);
+=======
+const mongoose = require('mongoose')
+const ObjectId = mongoose.Schema.Types.ObjectId
+
+const reviewSchema = new mongoose.Schema(
+    {
+        bookId: { type: ObjectId, required: true, ref: 'Book' },
+
+        reviewedBy: { type: String, required: true, default:'Guest', trim: true },
+
+        reviewedAt: { type: Date,required:true},
+
+        rating: { type: Number, minlength: 1, maxlength: 5, require: true },
+
+        review: { type: String, trim: true },
+
+        isDeleted: { type: Boolean, default: false }
+    },
+    { timestamps: true }
+)
+module.exports =  mongoose.model('Review', reviewSchema)
+>>>>>>> e66d4c70b2612921ea354dff334d2c8094ce0346
