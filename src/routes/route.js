@@ -12,11 +12,11 @@ router.post('/register', createUser)
 router.post('/login', userLogin)
 
 //Book API
-router.post('/books',authentication,authorization, createBook)
-router.get('/books',authentication,authorization, getBooks)
-router.get('/books/:bookId', getBookById)
-router.put("/books/:bookId", updateBookById)
-router.delete('/books/:bookId', deleteBookById)
+router.post('/books', authentication,authorization,createBook)
+router.get('/books',authentication,getBooks)
+router.get('/books/:bookId',authentication, getBookById)
+router.put("/books/:bookId",authentication,authorization, updateBookById)
+router.delete('/books/:bookId', authentication,authorization,deleteBookById)
 
 // Review API
 router.post('/books/:bookId/review', addReview)
