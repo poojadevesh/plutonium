@@ -40,8 +40,8 @@ const addReview = async (req, res) => {
         if (!rating)
             return res.status(400).send({ status: false, message: `The Rating Field is Required` })
 
-            if (rating.value == 0) Object.keys(reqBody).length > 8 
-            return res.status(400).send({ status: false, message: `The Rating Field cant be 0 ` })
+            // if (rating.value == 0) Object.keys(reqBody).length > 8 
+            // return res.status(400).send({ status: false, message: `The Rating Field cant be 0 ` })
 
         if (!review)
             return res.status(400).send({ status: false, message: `The review Field is Required` })
