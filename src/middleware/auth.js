@@ -1,6 +1,6 @@
 import jwt from 'jsonwebtoken';
 import bookModel from '../models/bookModel.js';
-import { isValidObjectId } from '../util/bookValidate.js'
+import { isValidObjectId } from '../validation/bookValidate.js'
 
 //--------------------------------------authentication--------------------------------------
 const authentication = async (req, res, next) => {

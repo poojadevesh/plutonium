@@ -8,10 +8,10 @@ import {
   isValidPwd,
   isValidStr,
   isValidEmail
-} from "../util/userValidate.js";
+} from "../validation/userValidate.js";
 
 //POST /register
-//By Richard
+
 const createUser = async (req, res) => {
 
   try {

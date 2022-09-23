@@ -2,7 +2,7 @@ import bookModel from '../models/bookModel.js'
 import userModel from '../models/userModel.js'
 import reviewModel from '../models/reviewModel.js'
 
-import { dataValidation, isValidObjectId, isValidText, isValidName, isValidIsbn, isValidDate, } from '../util/bookValidate.js'
+import { dataValidation, isValidObjectId, isValidText, isValidName, isValidIsbn, isValidDate, } from '../validation/bookValidate.js'
 
 // -------------------------------------------createBook---------------------------------------------
 
@@ -101,28 +101,6 @@ const createBook = async (req, res) => {
 }
 //=====================================================================================================
 //GET /books BY-QUERY
-//by Richard
-
-// let getBooks = async (req, res) => {
-
-//   let datas = req.query
-
-//   let { userId, category, subcategory } = datas
-
-
-//   let book = await bookModel.findOne({ userId: userId })
-//   let user = await userModel.findById(userId)
-
-//   // if(book.isDeleted == true)
-
-//   // return res.send({message:`The Book ${book.title} By ${user.title}.${user.name} has been Deleted`})
-
-//   let result = await bookModel.find({ $or: [{ userId: userId }, { category: category }] }).select({ createdAt: 0, updatedAt: 0, __v: 0, subcategory: 0, ISBN: 0 }).sort({ title: 1 })
-
-
-//   return res.send({ data: result })
-
-// }
 
  
 const getBooks = async (req, res) => {
@@ -150,7 +128,6 @@ const getBooks = async (req, res) => {
 
 //============================================================================================================================================
 //GET /books/:bookId 
-//By Richard
 
 const getBookById = async (req, res) => {
   try {
@@ -272,7 +249,7 @@ const updateBookById = async (req, res) => {
 
 
 //---------------------------------------------DeleteBook------------------------------------------------------------------------------------------
-//SHAYAN BISWAS
+
 const deleteBookById = async (req, res) => {
   try {
     const bookId = req.params.bookId;
