@@ -16,6 +16,6 @@ mongoose.connect(URI, {
 
 app.use('/', route)
 
-app.use((req,res)=>res.status(400).send({satus:false,message:"invalid path param"}))
-    
+app.use((req, res) => res.status(400).send({ status: false, message: 'Invalid URL' }))
+
 app.listen(PORT, () => console.log(`Express app is running on port ${PORT}`))

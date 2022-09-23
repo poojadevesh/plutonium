@@ -1,8 +1,8 @@
 import mongoose from 'mongoose'
-import isValid from "isvalid"
+
 // ------------dataValidation-----------
 const dataValidation = (data) => {
-    if (Object.keys(data).length != 0 )
+    if (Object.keys(data).length != 0)
         return true
     return false
 }
@@ -53,7 +53,7 @@ const isValidName = (name) => {
 //-------------------------------reviews----------------------------
 const isValidReviews = (review) => {
     const rev = review.trim()
-    if (typeof rev == "Number" && rev.match(/^[ 0-9 ]{1,1}$/))
+    if (typeof rev == "Number" && rev.match(/^[ 0-9 ]{1,}$/))
         return true
     return false
 }
@@ -71,15 +71,15 @@ const isValidBody = function (value) {
     return true;
 }
 
-const isValidDate = (date)=>{
+const isValidDate = (date) => {
     const regx = /^\d{4}\-(0[1-9]|1[012])\-(0[1-9]|[12][0-9]|3[01])$/
     return regx.test(date)
 };
 
-const isValidRating= (rating)=>{
+const isValidRating = (rating) => {
     let value = /^([1-5]|1[05])$/
-    if(value.test(rating))
-    return false
+    if (value.test(rating))
+        return false
     return true
 }
 export {
@@ -94,5 +94,6 @@ export {
     isValidReviews,
     isValidIsbn,
     isValidBody,
-    isValidDate
+    isValidDate,
+    isValidRating
 }
