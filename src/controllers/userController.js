@@ -41,9 +41,11 @@ const createUser = async (req, res) => {
     if (isValidNumber(phone))
       return res.status(400).send({ status: false, message: " please enter 10 digit IND mobile number", });
 
-    // let uniquePhoneNo = await userModel.findOne({ phone: phone });
-    // if (uniquePhoneNo)
-    //   return res.status(400).send({ status: false, message: "phoneNo should be  unique" });
+      let uniquePhoneNo = await userModel.findOne({ phone: phone });
+
+      if (uniquePhoneNo)
+        return res.status(400).send({ status: false, message: "PhoneNo should be  unique" });
+  
 
     if (!phone)
       return res.status(400).send({ status: false, message: "Phone is  mandatory" });
@@ -59,11 +61,6 @@ const createUser = async (req, res) => {
 
     if (!password)
       return res.status(400).send({ status: false, message: "password is  mandatory" });
-
-    let uniquePhoneNo = await userModel.findOne({ phone: phone });
-
-    if (uniquePhoneNo)
-      return res.status(400).send({ status: false, message: "PhoneNo should be  unique" });
 
     if (!email)
       return res.status(400).send({ status: false, message: "Email is  mandatory" });
