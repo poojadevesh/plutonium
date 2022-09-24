@@ -2,7 +2,10 @@ const mongoose = require('mongoose')
 
 const userSchema = new mongoose.Schema(
     {
-        title: { type: String, required: 'Book Title Required', enum: ['Mr', 'Mrs', 'Miss'], trim: true },
+        title: {
+            type: String,
+            required: 'Book Title Required', enum: ['Mr', 'Mrs', 'Miss'], trim: true
+        },
         name: { type: String, required: 'Book Name Required', trim: true },
         phone: { type: String, required: 'Book Phone Required', trim: true },
         email: { type: String, required: 'Book Email Required', unique: true, trim: true },  //valid email
