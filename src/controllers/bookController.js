@@ -188,7 +188,6 @@ const updateBookById = async (req, res) => {
         .send({ status: false, message: "Please Provide Details for Update" });
 
     const { title, excerpt, releasedAt, ISBN } = reqBody;
-console.log(title);
     const bookObject = {};
 
     if (title.trim().length === 0 || !title)

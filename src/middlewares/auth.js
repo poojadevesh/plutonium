@@ -10,7 +10,7 @@ const authentication = async (req, res, next) => {
         if (!token)
             return res.status(400).send({ status: false, message: 'Token must be present' })
 
-        const decodedToken = jwt.verify(token, 'group56')
+        const decodedToken = jwt.verify(token, 'group52')
 
         if (!decodedToken)
             return res.status(401).send({ status: false, message: 'Authentication Failed!!!' })
@@ -40,7 +40,7 @@ const authorization = async (req, res, next) => {
         if (!token)
             return res.status(400).send({ status: false, message: 'Token must be present' })
 
-        const decodedToken = jwt.verify(token, 'group56')
+        const decodedToken = jwt.verify(token, 'group52')
     
         
         if (!decodedToken)
