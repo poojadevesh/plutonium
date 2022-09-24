@@ -1,5 +1,5 @@
 const userModel = require("../models/userModel.js");
-const jwt = ("jsonwebtoken");
+const jwt = require("jsonwebtoken");
 const bcrypt = require('bcrypt');
 const {isValidBody,isValidEnum, isValidNumber,isValidPwd,isValidStr,isValidEmail} = require("../util/userValidate.js");
 
@@ -104,7 +104,7 @@ const userLogin = async (req, res) => {
       return res.status(401).send({ status: false, message: "Authentication failed!!!, Incorrect Email or Password !!!" });
 
     const payload = { userId: user._id, iat: Math.floor(Date.now() / 1000) };
-    const token = jwt.sign(payload, "group56", { expiresIn: "24h" });
+    const token = jwt.sign(payload, "group52", { expiresIn: "24h" });
 
     return res.status(200).send({ status: true, message: "Login Successfully", token: token, exp: payload.exp, });
 

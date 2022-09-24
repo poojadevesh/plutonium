@@ -4,7 +4,7 @@ const router = express.Router()
 const { createUser, userLogin } = require('../controllers/userController.js')
 const { createBook, getBooksQuery, getBookById, updateBookById,deleteBookById} = require('../controllers/bookController.js')
 const { addReview, updateReview, deleteReview } = require('../controllers/reviewController.js')
-const {authentication,authorization} = require('../middleware/auth.js')
+const {authentication,authorization} = require('../middlewares/auth.js')
 
 // User API
 router.post('/register', createUser)
