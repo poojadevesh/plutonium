@@ -82,15 +82,12 @@ const createUser = async (req, res) => {
 const userLogin = async (req, res) => {
   try {
     const { email, password } = req.body;
-
     if (Object.keys(req.body).length == 0)
       return res.status(400).send({ status: false, message: "Enter Login Credentials." });
 
-    if (!email)
-      return res.status(400).send({ status: false, msg: "Email Required." });
+    if (!email) return res.status(400).send({ status: false, msg: "Email Required." });
 
-    if (!password)
-      return res.status(400).send({ status: false, msg: "Password Required." });
+    if (!password) return res.status(400).send({ status: false, msg: "Password Required." });
 
     if (!isValidEmail(email))
       return res.status(400).send({ status: false, msg: `your Email-Id ${email} is invalid` });
@@ -107,12 +104,8 @@ const userLogin = async (req, res) => {
     const token = jwt.sign(payload, "group52");
 
     return res.status(200).send({ status: true, message: "Login Successfully", token: token, exp: payload.exp, });
-
   } catch (err) {
     res.status(500).send({ status: false, message: err.message });
-  }
-};
-
-
+  }};
 
 module.exports = { createUser, userLogin };
