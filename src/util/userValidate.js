@@ -47,5 +47,4 @@ const isValidEmail = (email) => {
     return false
 }
 
-
 module.exports = {isValidBody,isValidStr,isValidEnum,isValidNumber, isValidEmail,isValidPwd,isValidObjectId}
