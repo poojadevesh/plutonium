@@ -111,7 +111,7 @@ const updateReview = async (req, res) => {
 
         const reviewData = await reviewModel.findOne({ _id: reviewId }).select({ bookId: 1, reviewedBy: 1, reviewedAt: 1, rating: 1, review: 1 })
 
-        
+
         const { _id, title, excerpt, userId, category, subcategory, isDeleted, reviews, deletedAt, releaseAt, createdAt, updatedAt } = exitsBook
 
         //---------------------------------according to question------------------------------
@@ -122,30 +122,31 @@ const updateReview = async (req, res) => {
         res.status(500).send({ status: false, error: err.message })
     }}
 
-//<============================================== deleted review =========================>
+//<================================= deleted review ===============================>
 
 const deleteReview = async (req, res) => {
     try {
-        const bookId = req.params.bookId
-        const reviewId = req.params.reviewId 
-        if (!isValidObjectId(bookId))
+        let bookId = req.params.bookId
+        let reviewId = req.params.reviewId 
+        if(!isValidObjectId(bookId))
             return res.status(400).send({ status: false, message: "Enter Valid Book Id." })
         
-        if (!isValidObjectId(reviewId))
+        if(!isValidObjectId(reviewId))
             return res.status(400).send({ status: false, message: "Enter Valid Review Id." })
 
-        const book = await bookModel.findOne({ _id: bookId, isDeleted: false })
-        if (!book) return res.status(404).send({ status: true, message: "Book Does Not Found !!!" })
+        let book = await bookModel.findOne({ _id: bookId, isDeleted: false })
+        if (!book) return res.status(404).send({ status: true, message: "Book Does Not Found" })
         
-        const reviews = book.reviews
-        book = book._id.toString()
-        const review = await reviewModel.findOneAndUpdate({ _id: reviewId, bookId: bookId, isDeleted: false }, { $set: { isDeleted: true } })
+        let reviews = book.reviews
+        let = book._id.toString()
+        let review = await reviewModel.findOneAndUpdate({ _id: reviewId, bookId: bookId, isDeleted: false }, { $set: { isDeleted: true } })
 
-        if (!review) return res.status(404).send({ status: true, message: "Review Does Not Found !!!" })
+        if(!review) return res.status(404).send({ status: true, message: "Review Does Not Found" })
+
         await bookModel.findOneAndUpdate({ _id: bookId }, { reviews: reviews - 1 })
-        
-        res.status(200).send({status: true, message: "Review Deleted !!!"})
-    } catch (err) {
+             
+        res.status(200).send({status: true, message: "Review Deleted"})
+    }catch (err) {
         res.status(500).send({ status: false, message: err.message });
     }}
 
