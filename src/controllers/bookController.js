@@ -135,7 +135,7 @@ const getBookById = async (req, res) => {
 //========================================= book/put ====================================================>
 
 const updateBookById = async (req, res) => {
- // try {
+ try {
     const bookId = req.params.bookId;
     if (!isValidObjectId(bookId)) {return res.status(400).send({status: false, message: `Book Id in params is Invalid`})}
     const book = await bookModel.findOne({_id: bookId,isDeleted: false,});
@@ -185,7 +185,9 @@ const updateBookById = async (req, res) => {
       { _id: book._id },bookObject,{ returnDocument: "after" });
 
     return res.status(200).send({ status: true, message: "Success", data: updatedBookDetail });
-  // 
+    }catch(err){
+      res.status(500).send({status:false, error: err.message})
+    }
 };
 
 //---------------------------------------------DeleteBook--------------------------
