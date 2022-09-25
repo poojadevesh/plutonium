@@ -2,7 +2,7 @@ const validate = require('validator')
 const bookModel = require('../models/bookModel.js')
 const reviewModel = require('../models/reviewModel.js')
 const { isValidRevDate } = require('../util/reviewValidate.js')
-const { dataValidation, isValidObjectId, isValidName, isValidRating, isValidDate} = require('../util/bookValidate.js')
+const { dataValidation, isValidObjectId, isValidName, isValidRating, isValidDate,isValidReviews} = require('../util/bookValidate.js')
 
 
 const addReview = async (req, res) => {
@@ -79,7 +79,7 @@ const updateReview = async (req, res) => {
         
         const filter = {}
 
-        if (reviewedBy) {
+        if(reviewedBy) {
             if (!isValidName(reviewedBy))
                 return res.status(400).send({ status: false, message: `This '${reviewedBy}' isn\'t valid user` })
             filter['reviewedBy'] = reviewedBy  }
@@ -88,11 +88,11 @@ const updateReview = async (req, res) => {
         if (!(rating >= 1 && rating <= 5)) return res.status(400).send({ status: false, message: 'rate between 1 to 5' })
             filter['rating'] = rating}
 
-        // if (review) {
-        //     if (!isValidReviews(review))
-        //         return res.status(400).send({ status: false, message: `This '${review}' isn\'t valid review` })
-        //     filter['review'] = review
-        // }
+        if (review) {
+            if (!isValidReviews(review))
+                return res.status(400).send({ status: false, message: `This '${review}' isn\'t valid review` })
+            filter['review'] = review
+        }
 
         const exitsBook = await bookModel.findById(bookId)
         if (!exitsBook) return res.status(404).send({ status: false, message: `No book found by this bookId ${bookId}`})
