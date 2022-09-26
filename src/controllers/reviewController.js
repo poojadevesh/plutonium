@@ -54,7 +54,7 @@ const addReview = async (req, res) => {
         return res.status(500).send({ status: false, message: err.message })
     }}
 
-//----------------------------------------updateReview----------------------------------------------
+//-------------------------------updateReview------------------------------------------
 const updateReview = async (req, res) => {
     try {
         const reqBody = req.body

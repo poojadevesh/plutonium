@@ -3,7 +3,7 @@ const jwt = require("jsonwebtoken");
 const bcrypt = require('bcrypt');
 const {isValidBody,isValidEnum, isValidNumber,isValidPwd,isValidStr,isValidEmail} = require("../util/userValidate.js");
 
-//POST /register
+
 const createUser = async (req, res) => {
 
   try {
@@ -77,7 +77,7 @@ const createUser = async (req, res) => {
   }};
 
 
-//========================POST /login===============================
+//-----------------------------login api---------------------------------------
 
 const userLogin = async (req, res) => {
   try {

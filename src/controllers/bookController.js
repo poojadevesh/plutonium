@@ -4,7 +4,7 @@ const reviewModel = require('../models/reviewModel.js')
 
 const { dataValidation, isValidObjectId, isValidText, isValidName, isValidIsbn, isValidDate, } = require('../util/bookValidate.js')
 
-// -------------------------------------------createBook--------------------------------------
+// -------------------------------post-Api------------createBook--------------------------------------
 const createBook = async (req, res) => {
   try {
     const reqBody = req.body
@@ -83,7 +83,7 @@ const createBook = async (req, res) => {
     res.status(500).send({ status: false, error: err.message })
   }
 }
-//=====================================================================================================
+//===================================get-Api========================================================
 //GET /books BY-QUERY
  
 const getBooksQuery = async function (req, res) {
@@ -101,8 +101,8 @@ const getBooksQuery = async function (req, res) {
 };
 
 
-//============================================================================================================================================
-//GET /books/:bookId 
+//===================================get-api ============================================================
+
 const getBookById = async (req, res) => {
   try {
         let bookID = req.params.bookId
@@ -127,7 +127,7 @@ const getBookById = async (req, res) => {
     res.status(500).send({ status: false, error: err.message })
   }}
 
-//========================================= book/put ====================================================>
+//===============put-api================== book/put ====================================================>
 
 const updateBookById = async (req, res) => {
  try {
@@ -176,7 +176,7 @@ const updateBookById = async (req, res) => {
     }
 };
 
-//---------------------------------------------DeleteBook--------------------------
+//--------------------------delete-api----------DeleteBook--------------------------
 const deleteBookById = async (req, res) => {
   try {
     const bookId = req.params.bookId;
