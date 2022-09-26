@@ -44,13 +44,13 @@ const createBook = async (req, res) => {
       return res.status(400).send({ status: false, message: 'category is mandatory' })
 
     if (!isValidName(category))
-      return res.status(400).send({ status: false, message: 'category isn\'t valid' })
+      return res.status(400).send({ status: false, message: 'category is not valid' })
 
     if (!subcategory)
       return res.status(400).send({ status: false, message: 'subcategory is mandatory' })
 
     if (!isValidName(subcategory))
-      return res.status(400).send({ status: false, message: 'subcategory isn\'t valid' })
+      return res.status(400).send({ status: false, message: 'subcategory is not valid' })
 
     if (!releasedAt)
       return res.status(400).send({ status: false, message: 'releasedAt is mandatory' })
@@ -107,13 +107,13 @@ const getBookById = async (req, res) => {
   try {
         let bookID = req.params.bookId
 
-    if (!isValidObjectId(bookID)) return res.status(400).send({ status: false, message: `This bookId ${bookID} is Invalid` });
+    if (!isValidObjectId(bookID)) return res.status(400).send({ status: false, message: `This bookId  is Invalid` });
 
     let bookId = await bookModel.findById(bookID)
-    if (!bookId) return res.status(404).send({ status: false, message: `No Book Found By This BookId ${bookID}` })
+    if (!bookId) return res.status(404).send({ status: false, message: `No Book Found By This BookId` })
 
     if (bookId.isDeleted == true)
-      return res.status(404).send({ status: false, message: `The Book Title '${bookId.title}' has been Deleted` })
+      return res.status(404).send({ status: false, message: `The Book Title has been Deleted` })
 
     let findBook = await bookModel.findById(bookID).select({ __v: 0, ISBN: 0 })
     let review = await reviewModel.find({ bookId: bookID }).select({ isDelete: 0, createdAt: 0, updatedAt: 0, isDeleted: 0, __v: 0 })
