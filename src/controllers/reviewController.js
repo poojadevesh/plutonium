@@ -49,7 +49,7 @@ const addReview = async (req, res) => {
         let finalOp = await reviewModel.findOne({ _id: result._id }).select({ isDeleted: 0, createdAt: 0, updatedAt: 0, __v: 0 })
         finalOp.reviewedAt = new Date()
 
-        res.status(201).send({ status: true, message: `New Review added Sucessfully to the Book📕 '${findBook.title}'`, data: finalOp })
+        res.status(201).send({ status: true, message: `New Review added Sucessfully to the Book '${findBook.title}'`, data: finalOp })
     } catch (err) {
         return res.status(500).send({ status: false, message: err.message })
     }}
