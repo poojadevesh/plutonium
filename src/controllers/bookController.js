@@ -59,7 +59,7 @@ const createBook = async (req, res) => {
       return res.status(400).send({ status: false, message: 'Please use \'YYYY-MM-DD\' this format' });
     
     if (req.user.userId != userId)
-      return res.status(403).send({ status: false, msg: `This '${userId}' person is not authenticate` });
+      return res.status(403).send({ status: false, msg: `This person is not authenticate` });
     
     const existUser = await userModel.findOne({ _id: userId })
     if (!existUser)
