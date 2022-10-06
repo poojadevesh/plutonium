@@ -2,7 +2,7 @@ const urlModel=require("../model/urlModel")
 const shortid = require('shortid');
 const redis = require("redis");
 const { promisify } = require("util");
-// const axios = require("axios")
+const axios = require("axios")
 const validUrl = require('valid-url')
 let a =/^www\.[a-z0-9-]+(?:\.[a-z0-9-]+)*\.+(\w)*/
 
@@ -46,11 +46,18 @@ const shortenUrl = async(req,res)=>{
         console.log(url.longUrl)
       }
   
-      if(!validUrl.isWebUri(url.longUrl))
-      {
-           return res.status(400).send({status:false,msg:"not a valid url"})
-         }
+      // if(!validUrl.isWebUri(url.longUrl))
+      // {
+      //      return res.status(400).send({status:false,msg:"not a valid url"})
+      //    }
+      let correctLink = false
+      await axios.get(url.longUrl)
+          .then((res) => { if (res.status == 200 || res.status == 201) correctLink = true; })
+          .catch((error) => { correctLink = false })
+      if (correctLink == false) return res.status(400).send({ status: false, message: "invalid url please enter valid url!!" });
         let presentUrl= await GET_ASYNC(url.longUrl)
+
+
         //console.log(presentUrl)
         if(presentUrl){
             return res.status(200).send({ status: true,message:"already created(cache)", data: JSON.parse(presentUrl) });
