@@ -2,9 +2,9 @@ const urlModel=require("../model/urlModel")
 const shortid = require('shortid');
 const redis = require("redis");
 const { promisify } = require("util");
-
 // const axios = require("axios")
 const validUrl = require('valid-url')
+let a =/^www\.[a-z0-9-]+(?:\.[a-z0-9-]+)*\.+(\w)*/
 
 
 const redisClient = redis.createClient(
@@ -38,40 +38,41 @@ const isValid = function(value) {
 
 const shortenUrl = async(req,res)=>{
     try {
-        let longUrl=req.body.longUrl
-        if (!isValid(longUrl))
+        let url=req.body
+        if (!isValid(url.longUrl))
       return res.status(400).send({ status: false, message: "Please provide Url" });
-      
-      if(!validUrl.isWebUri(longUrl))
-     
+      if(a.test(url.longUrl)){
+        url.longUrl="http://"+url.longUrl
+        console.log(url.longUrl)
+      }
+  
+      if(!validUrl.isWebUri(url.longUrl))
       {
            return res.status(400).send({status:false,msg:"not a valid url"})
-
          }
-        let presentUrl= await GET_ASYNC(longUrl)
+        let presentUrl= await GET_ASYNC(url.longUrl)
         //console.log(presentUrl)
         if(presentUrl){
             return res.status(200).send({ status: true,message:"already created(cache)", data: JSON.parse(presentUrl) });
         }
 
-        let existUrl=await urlModel.findOne({longUrl})
+        let existUrl=await urlModel.findOne({longUrl:url.longUrl})
        if(existUrl){
-    await SET_ASYNC(longUrl,JSON.stringify(existUrl))
+    await SET_ASYNC(url.longUrl,JSON.stringify(existUrl))
     return res.status(200).send({ status: true,message:"already created(DB)", data: existUrl });
        }
         let base="http://localhost:3000/"
-        let urlCode=shortid.generate(longUrl).toLowerCase()
+        let urlCode=shortid.generate(url.longUrl).toLowerCase()
 
         let shortUrl= base+urlCode
     let newData={
         urlCode:urlCode,
-       longUrl:longUrl,
+       longUrl:url.longUrl,
        shortUrl:shortUrl
 
     }
-
          let savedData=await urlModel.create(newData)
-         await SET_ASYNC(longUrl,JSON.stringify(savedData))
+         await SET_ASYNC(url.longUrl,JSON.stringify(savedData))
 
 
             return res.status(201).send({ status: true, data: newData});
