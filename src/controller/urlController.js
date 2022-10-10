@@ -2,6 +2,7 @@ const urlModel=require("../model/urlModel")
 const shortid = require('shortid');
 const redis = require("redis");
 const axios = require("axios")
+
 let a =/^www\.[a-z0-9-]+(?:\.[a-z0-9-]+)*\.+(\w)*/
 
 //===========================redis connection=========================//
@@ -24,18 +25,23 @@ const isValid = function(value) {
 //=================================post api====================================//
 const shortenUrl = async(req,res)=>{
     try {
-        let url=req.body
+        let url = req.body
+
         if (!isValid(url.longUrl))
       return res.status(400).send({ status: false, message: "Please provide Url" });
+
       if(a.test(url.longUrl)){
         url.longUrl="http://"+url.longUrl
       }
+
       let Link = false
+
       await axios.get(url.longUrl)
           .then((res) => { if (res.status == 200 || res.status == 201) Link = true; })
           .catch((error) => { Link = false })
+
       if (Link == false) return res.status(400).send({ status: false, message: "invalid url please enter valid url!!" });
-        let presentUrl= await redisClient.get(url.longUrl)
+         let presentUrl= await redisClient.get(url.longUrl)
 
      //console.log(presentUrl)
         if(presentUrl){
@@ -50,7 +56,7 @@ const shortenUrl = async(req,res)=>{
         let base="http://localhost:3000/"
         let urlCode=shortid.generate(url.longUrl).toLowerCase()
 
-        let shortUrl= base+urlCode
+        let shortUrl = base+urlCode
     let newData={
         urlCode:urlCode,
        longUrl:url.longUrl,
@@ -71,7 +77,7 @@ const shortenUrl = async(req,res)=>{
 
 const getUrl= async(req,res)=>{
     try {
-        let urlCode=req.params.urlCode
+        let urlCode = req.params.urlCode
         let cacheUrl= await redisClient.get(urlCode)
        // console.log(cacheUrl+"//REDIS//")
         if(cacheUrl){
